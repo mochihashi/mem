@@ -7,7 +7,7 @@ export default function() {
 	let div = html.renderOverlay(`
 <div class="row">
 	<div class="col col-login mx-auto">
-		<form class="card" action="api/signup/">
+		<form class="card" action="api/signUp/">
 			<div class="card-header">
 				<h3 class="card-title"><span class="lang-sign-up"></span></h3>
 				<div class="card-options">

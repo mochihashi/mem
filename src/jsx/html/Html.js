@@ -18,7 +18,7 @@ export function renderOverlay(html) {
 	return $('#overlay-container');
 }
 	
-export function renderOverlayCard(title, colClass, html) {
+export function renderOverlayCard(title = '', colClass = 'col-12', html) {
 	return renderOverlay(`
 <div class="row">
 	<div class="${colClass}">
