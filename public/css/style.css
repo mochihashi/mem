@@ -1,0 +1,46 @@
+
+test-question-area, .test-answer-area {
+	min-height: 30vh;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+.test-answer-area {
+	min-height: 45vh;
+}
+
+.test.card-fullscreen .card-body {
+	overflow: scroll;
+}
+.test.card-fullscreen .test-question-area {
+	min-height: 40vh;
+}
+.test.card-fullscreen .test-answer-area {
+	min-height: 60vh;
+}
+
+.test-prompt {
+	font-size: 1.2rem;
+}
+.test-question {
+	font-size: 6vw;
+}
+.test-answer {
+	font-size: 2.5vw;
+}
+.test-options .btn-lg, .test-yesno .btn-lg {
+	font-size: 2vw;
+	white-space: normal;
+}
+
+@media (max-width: 768px) {
+	.test-question {
+		font-size: 2rem;
+	}
+	.test-answer {
+		font-size: 1.2rem;
+	}
+	.test-options .btn-lg, .test-yesno .btn-lg {
+		font-size: 1rem;
+	}
+}
