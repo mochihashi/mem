@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xml-stylesheet type="text/xsl" href="../table.xsl"?>
+<document>
+<table>
+	<name>word_table</name>
+	<engine>InnoDb</engine>
+	<note></note>
+</table>
+<columns>
+
+<column><field>id</field><type>int</type><not-null>*</not-null><default></default><note>ID</note><extra>auto_increment</extra></column>
+<column><field>name</field><type>text</type><not-null>*</not-null><default></default><note></note></column>
+<column><field>deleted</field><type>tinyint</type><not-null></not-null><default>0</default><note></note></column>
+<column><field>update_time</field><type>timestamp</type><not-null></not-null><default></default><note></note></column>
+<column><field>create_time</field><type>datetime</type><not-null></not-null><default></default><note></note></column>
+
+<column><field>user_id</field><type>int</type><not-null>*</not-null><default></default><note></note></column>
+<column><field>page_id</field><type>int</type><not-null></not-null><default>0</default><note></note></column>
+<column><field>description</field><type>text</type><not-null></not-null><default></default><note></note></column>
+<column><field>private</field><type>tinyint</type><not-null></not-null><default>0</default><note>1:activated</note></column>
+
+</columns>
+<primary-key>
+	<column>id</column>
+</primary-key>
+<keys>
+
+<key><name>user</name><column>user_id</column></key>
+<key><name>page</name><column>page_id</column></key>
+
+</keys>
+</document>
