@@ -12,10 +12,14 @@ export function renderOverlay(html) {
 	$('#overlay-container').html(html).show();
 	$('#overlay-container .card-options-remove').click(function(event){
 		event.preventDefault();
-		$('#overlay-container').hide();
-		$('#main-container').show();
+		closeOverlay();
 	});
 	return $('#overlay-container');
+}
+
+export function closeOverlay() {
+	$('#overlay-container').hide();
+	$('#main-container').show();
 }
 	
 export function renderOverlayCard(title = '', colClass = 'col-12', html) {
