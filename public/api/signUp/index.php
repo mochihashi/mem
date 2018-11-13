@@ -1,9 +1,50 @@
 <?php
+require_once('../api.php');
 
-// validate
-
-// db check
-
-// insert
-
-// send email
+try {
+	// validate
+	require_once('common/Validator.php');
+	$validator = new Validator($form);
+	if(!$validator->validateField('name', array('required' => true))
+	|| !$validator->validateField('email', array('required' => true, 'type' => 'email'))
+	|| !$validator->validateField('password', array('required' => true, 'minLength' => 8))
+	) respondError($validator->getErrors());
+	
+	// db validate
+	require_once('config/db.php');
+	require_once('common/Dao.php');
+	$dao = new Dao($db, 'user');
+	if(!$validator->validateUniqueField($dao, 'email')
+	|| !$validator->validateUniqueField($dao, 'name')
+	) respondError($validator->getErrors());
+	
+	// insert
+	require_once('common/Password.php');
+	$name = mapGet($form, 'name');
+	$email = mapGet($form, 'email');
+	$password = mapGet($form, 'password');
+	$lang = mapGet($form, 'lang');
+	if(!$lang) $lang = 'en';
+	$password_hash = Password::hashPassword($password);
+	
+	$dao->addValue('name', $name);
+	$dao->addValue('email', $email);
+	$dao->addValue('password_hash', $password_hash);
+	$dao->addValue('lang', $lang);
+	$dao->insert();
+	$id = $dao->getLastInsertId();
+	$key = Password::encodeActivateKey($id, $email);
+	
+	// send email
+	require_once("lang/lang.$lang.php");
+	$url = App::URL . 'api/activate/?key=' . $key;
+	$replaces = array('{#APPNAME}' => App::NAME, '{#URL}' => $url, '{#NAME}' => $name);
+	$title = strtr(Lang::ACTIVATE_MAIL_TITLE, $replaces);
+	$body = strtr(Lang::ACTIVATE_MAIL_BODY, $replaces);
+	mb_send_mail($email, $title, $body);
+	
+	respond(array('id' => $id));
+	
+} catch(Exception $e) {
+	respondException($e);
+}

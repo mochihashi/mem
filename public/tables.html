@@ -17,8 +17,9 @@
 	<script src="https://mochihashi.github.io/static/tabler/assets/js/require.min.js"></script>
 	<script src="https://mochihashi.github.io/static/tabler/assets/js/tabler.js"></script>
 	<link rel="stylesheet" href="https://mochihashi.github.io/static/tabler/assets/css/tabler.css" />
+	<link rel="stylesheet" href="css/lang/lang.en.css" />
 </head>
-<body>
+<body lang="en">
 
 <div class="page">
 <div class="page-main">
@@ -79,12 +80,28 @@
 							<table class="table mb-0 table-hover">
 								<thead>
 									<tr>
-										<th>Table</th>
+										<th><span class="lang-table"></span></th>
+										<th><span class="lang-category"></span></th>
+										<th></th>
 										<th></th>
 									</tr>
 								</thead>
 								<tr>
 									<td>Japanese basic phrases</td>
+									<td>Study Japanese</td>
+									<td></td>
+									<td>
+										<div class="btn-list">
+										<button class="btn btn-outline-secondary" onclick="location.href='table.html';"><i class="fe fe-external-link mr-2"></i>View</button>
+										<button class="btn btn-outline-primary" onclick="location.href='edit.html';"><i class="fe fe-edit mr-2"></i>Edit</button>
+										<button class="btn btn-outline-danger"><i class="fe fe-delete mr-2"></i>Delete</button>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td>Chinese basic phrases</td>
+									<td>Study Chinese</td>
+									<td><span class="lang-private"></span></td>
 									<td>
 										<div class="btn-list">
 										<button class="btn btn-outline-secondary" onclick="location.href='table.html';"><i class="fe fe-external-link mr-2"></i>View</button>

@@ -29,6 +29,7 @@ export default function() {
 					<input type="password" class="form-control" name="password" placeholder="Password">
 				</div>
 				<div class="form-footer">
+					<input type="hidden" name="lang" value="${window.app.lang.lang}"/>
 					<button type="submit" class="btn btn-primary btn-block"><span class="lang-create-new-account"></span></button>
 				</div>
 				</div></div>
@@ -47,5 +48,25 @@ export default function() {
 		name: {required: true, minLength: 3},
 		email: {required: true, type: 'email'},
 		password: {required: true, minLength: 8}
-	}});
+	}, callback: renderRegistered});
+}
+
+function renderRegistered() {
+	html.renderOverlay(`
+<div class="row">
+	<div class="col col-login mx-auto">
+		<div class="card">
+			<div class="card-header">
+				<h3 class="card-title"><span class="lang-msg-account-registered"></span></h3>
+				<div class="card-options">
+					<a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
+				</div>
+			</div>
+			<div class="card-body p-6">
+				<div><span class="lang-msg-activation-email-sent"></span></div>
+			</div>
+		</div>
+	</div><!-- .col-login -->
+</div><!-- .row -->
+	`);
 }

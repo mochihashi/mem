@@ -50,7 +50,7 @@
 						<i class="dropdown-icon fe fe-grid"></i> Tables
 						</a>
 						<a class="dropdown-item" href="#">
-						<i class="dropdown-icon fe fe-file"></i> Pages
+						<i class="dropdown-icon fe fe-file"></i> Categories
 						</a>
 						<div class="dropdown-divider"></div>
 						<a class="dropdown-item" href="#">
@@ -90,11 +90,22 @@ Good morning	おはようございます	o ha yo: go za i ma su</textarea>
 							</div>
 							<div class="col-md-6 col-lg-3">
 								<div class="form-group">
-									<label class="form-label"><i class="fe fe-file"></i> Page</label>
+									<label class="form-label"><i class="fe fe-folder"></i> Category</label>
+									<!--
 									<select class="form-control custom-select w-auto mr-2">
 										<option value=""></option>
 										<option value="1" selected="selected">Study Japanese</option>
 									</select>
+									-->
+									<div class="input-group">
+										<input type="text" class="form-control">
+										<div class="input-group-append">
+											<button data-toggle="dropdown" type="button" class="btn btn-secondary dropdown-toggle"></button>
+											<div class="dropdown-menu dropdown-menu-right">
+												<a class="dropdown-item" href="javascript:void(0);" onclick="$(this).parent().parent().parent().find('input').val($(this).text());">Study Japanese</a>
+											</div>
+										</div>
+									</div>
 								</div>
 							</div>
 							<div class="col-md-6 col-lg-3">

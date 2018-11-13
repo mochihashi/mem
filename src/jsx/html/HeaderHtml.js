@@ -33,7 +33,7 @@ export default function() {
 					<i class="dropdown-icon fe fe-grid"></i> <span class="lang-tables"></span>
 					</a>
 					<a class="dropdown-item" href="tables.html">
-					<i class="dropdown-icon fe fe-file"></i> <span class="lang-pages"></span>
+					<i class="dropdown-icon fe fe-folder"></i> <span class="lang-categories"></span>
 					</a>
 					<div class="dropdown-divider"></div>
 					<a class="dropdown-item" href="#">

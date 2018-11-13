@@ -15,7 +15,7 @@
 <column><field>create_time</field><type>datetime</type><not-null></not-null><default></default><note></note></column>
 
 <column><field>user_id</field><type>int</type><not-null>*</not-null><default></default><note></note></column>
-<column><field>page_id</field><type>int</type><not-null></not-null><default>0</default><note></note></column>
+<column><field>category_id</field><type>int</type><not-null></not-null><default>0</default><note></note></column>
 <column><field>description</field><type>text</type><not-null></not-null><default></default><note></note></column>
 <column><field>private</field><type>tinyint</type><not-null></not-null><default>0</default><note>1:activated</note></column>
 
@@ -26,7 +26,7 @@
 <keys>
 
 <key><name>user</name><column>user_id</column></key>
-<key><name>page</name><column>page_id</column></key>
+<key><name>category</name><column>category_id</column></key>
 
 </keys>
 </document>

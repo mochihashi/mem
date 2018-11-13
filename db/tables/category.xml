@@ -2,7 +2,7 @@
 <?xml-stylesheet type="text/xsl" href="../table.xsl"?>
 <document>
 <table>
-	<name>page</name>
+	<name>category</name>
 	<engine>InnoDb</engine>
 	<note></note>
 </table>
@@ -15,8 +15,6 @@
 <column><field>create_time</field><type>datetime</type><not-null></not-null><default></default><note></note></column>
 
 <column><field>user_id</field><type>int</type><not-null>*</not-null><default></default><note></note></column>
-<column><field>description</field><type>text</type><not-null></not-null><default></default><note></note></column>
-<column><field>private</field><type>tinyint</type><not-null></not-null><default>0</default><note>1:activated</note></column>
 
 </columns>
 <primary-key>

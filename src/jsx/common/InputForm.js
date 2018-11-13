@@ -24,6 +24,7 @@ export default class {
 				for(let name in fields) {
 					let props = fields[name];
 					if(me.validate(name, props)) continue;
+					if(!hasError) form.find('[name="' + name + '"]').focus();
 					hasError = true;
 				}
 				if(hasError) return;
@@ -33,20 +34,53 @@ export default class {
 			
 			$.ajax({
 				url: window.app.adjustUrl(form.attr('action')),
-				type: 'post',
+				type: "POST",
 				data: form.serialize(),
-				timeout: 10000,
-				complete: function(xhr, textStatus) {
-					me.endProcess(form);
-				},
-				success: function(result, textStatus, xhr) {
-					if(callback) callback();
-				},
-				error: function(xhr, textStatus, error) {
-					// show error message
+				dataType: "json",
+				timeout: 10000
+			}).done(function(data, textStatus, jqXHR) {
+				if(data.responseMessages) {
+					me.setMessage(form);
+					for(let i in data.responseMessages) {
+						me.addMessage(form, data.responseMessages[i]);
+					}
 				}
+				if(!data.error && callback) callback();
+			}).fail(function(jqXHR, textStatus, errorThrown) {
+				let error = jqXHR.status + ' ' + textStatus;
+				me.setMessage(form, {error: 'error', suffix: ': ' + jqXHR.status + ' ' + textStatus});
+			}).always(function() {
+				me.endProcess(form);
 			});
 		});
+	}
+	
+	setMessage(form, message) {
+		form.parent().find('.alert').remove();
+		if(message) this.addMessage(form, message);
+	}
+	addMessage(form, message) {
+		let type = (message.error ? 'danger' : 'primary');
+		let text = message.text ? message.text : message.error;
+		let prefix = message.prefix || '';
+		let suffix = message.suffix || '';
+		let field = message.field || '';
+		if(text) text = `<span class="lang-msg-${text}"></span>`;
+		if(message.error && field) {
+			let obj = form.find('[name="' + field + '"]');
+			if(obj.length == 1) {
+				obj.addClass('is-invalid');
+				obj.parent().append(`<div class="invalid-feedback">${prefix}${text}${suffix}</div>`);
+				return;
+			}
+		}
+		if(field) field = `[<span class="lang-${field}"></span>] `;
+		form.parent().append(`
+<div class="alert alert-${type} alert-dismissible">
+	<button type="button" class="close" data-dismiss="alert"></button>
+	${field}${prefix}${text}${suffix}
+</div>
+		`);
 	}
 	
 	startProcess(form) {
@@ -82,10 +116,11 @@ export default class {
 	validate(name, props) {
 		let obj = this.form.find('[name="' + name + '"]');
 		let value = this.val(obj);
+		obj.parent().find('.invalid-feedback').remove();
 		if(this.validator.validate(value, props)) {
 			// ok
 			if(obj.length == 1) obj.removeClass('is-invalid');
-			obj.parent().find('.invalid-feedback').remove();
+			return true;
 		} else {
 			// error
 			if(obj.length == 1) obj.addClass('is-invalid');
@@ -93,6 +128,7 @@ export default class {
 			let prefix = this.validator.prefix;
 			let suffix = this.validator.suffix;
 			obj.parent().append(`<div class="invalid-feedback">${prefix}<span class="lang-msg-${error}"></span>${suffix}</div>`);
+			return false;
 		}
 	}
 };
