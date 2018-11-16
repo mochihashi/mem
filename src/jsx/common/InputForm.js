@@ -41,11 +41,11 @@ export default class {
 			}).done(function(data, textStatus, jqXHR) {
 				if(data.responseMessages) {
 					me.setMessage(form);
-					for(let i in data.responseMessages) {
-						me.addMessage(form, data.responseMessages[i]);
+					for(let i = data.responseMessages.length - 1; i >= 0; i--) {
+						me.addMessage(form, data.responseMessages[i], i);
 					}
 				}
-				if(!data.error && callback) callback();
+				if(!data.error && callback) callback(data);
 			}).fail(function(jqXHR, textStatus, errorThrown) {
 				let error = jqXHR.status + ' ' + textStatus;
 				me.setMessage(form, {error: 'error', suffix: ': ' + jqXHR.status + ' ' + textStatus});
@@ -59,7 +59,7 @@ export default class {
 		form.parent().find('.alert').remove();
 		if(message) this.addMessage(form, message);
 	}
-	addMessage(form, message) {
+	addMessage(form, message, index) {
 		let type = (message.error ? 'danger' : 'primary');
 		let text = message.text ? message.text : message.error;
 		let prefix = message.prefix || '';
@@ -71,11 +71,12 @@ export default class {
 			if(obj.length == 1) {
 				obj.addClass('is-invalid');
 				obj.parent().append(`<div class="invalid-feedback">${prefix}${text}${suffix}</div>`);
+				if(index == 0) form.find('[name="' + field + '"]').focus();
 				return;
 			}
 		}
 		if(field) field = `[<span class="lang-${field}"></span>] `;
-		form.parent().append(`
+		form.parent().prepend(`
 <div class="alert alert-${type} alert-dismissible">
 	<button type="button" class="close" data-dismiss="alert"></button>
 	${field}${prefix}${text}${suffix}

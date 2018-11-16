@@ -27,4 +27,15 @@ export default class {
 		if(domain) c += '; domain=' + domain;
 		document.cookie = c;
 	}
+	
+	delete(key, domain, path) {
+		if(!this.map[key]) return;
+		this.map[key] = null;
+		let c = key + '=';
+		if(!path) path = '/';
+		c += '; path=' + path;
+		c += '; max-age=0';
+		if(domain) c += '; domain=' + domain;
+		document.cookie = c;
+	}
 };

@@ -32,11 +32,15 @@ function respond($data) {
 	echo json_encode($data);
 	exit();
 }
-function respondError($errors) {
+function respondErrors($errors) {
 	respond(array("error" => 1, "responseMessages" => $errors));
 }
+function respondError($error) {
+	respond(array("error" => 1, "responseMessages" => array($error)));
+}
 function respondException(&$e) {
-	$error = array('error' => 'error', 'suffix' => ': ' . $e->getMessage() . " - " . $e->getTrace());
+	$message = $e->getMessage() . " @" . $e->getFile() . "#" . $e->getLine();
+	$error = array('error' => 'error', 'suffix' => ': ' . $message);
 	respond(array("error" => 1, "responseMessages" => array($error)));
 }
 function redirect($url) {

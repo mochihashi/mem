@@ -45,7 +45,7 @@ class Password {
 		return self::encodeKey($id, $email, App::COOKIE_CRYPT_KEY);
 	}
 	
-	public function decodeCookieKey($key) {
+	public static function decodeCookieKey($key) {
 		return self::decodeKey($key, App::COOKIE_CRYPT_KEY, App::COOKIE_EXPIRE_HOURS);
 	}
 }

@@ -1,6 +1,7 @@
 'use strict';
 import * as html from 'html/Html';
 import SignUpHtml from 'html/sign/SignUpHtml';
+import AccountControlHtml from 'html/account/AccountControlHtml';
 import InputForm from 'common/InputForm';
 
 export default function() {
@@ -11,7 +12,7 @@ export default function() {
 			<div class="card-header">
 				<h3 class="card-title"><span class="lang-sign-in"></span></h3>
 				<div class="card-options">
-					<a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
+					<a href="javascript:void(0)" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
 				</div>
 			</div>
 			<div class="card-body p-6">
@@ -45,5 +46,8 @@ export default function() {
 	new InputForm().assign({form: div.find('form'), fields: {
 		email: {required: true, type: 'email'},
 		password: {required: true, minLength: 8}
+	}, callback: function(data) {
+		html.closeOverlay();
+		AccountControlHtml(data);
 	}});
 }

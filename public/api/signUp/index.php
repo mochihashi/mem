@@ -1,4 +1,7 @@
 <?php
+/**
+ * signUp
+ */
 require_once('../api.php');
 
 try {
@@ -8,7 +11,7 @@ try {
 	if(!$validator->validateField('name', array('required' => true))
 	|| !$validator->validateField('email', array('required' => true, 'type' => 'email'))
 	|| !$validator->validateField('password', array('required' => true, 'minLength' => 8))
-	) respondError($validator->getErrors());
+	) respondErrors($validator->getErrors());
 	
 	// db validate
 	require_once('config/db.php');
@@ -16,7 +19,7 @@ try {
 	$dao = new Dao($db, 'user');
 	if(!$validator->validateUniqueField($dao, 'email')
 	|| !$validator->validateUniqueField($dao, 'name')
-	) respondError($validator->getErrors());
+	) respondErrors($validator->getErrors());
 	
 	// insert
 	require_once('common/Password.php');

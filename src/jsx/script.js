@@ -3,6 +3,7 @@ import Cookies from 'common/Cookies';
 import Lang from 'common/Lang';
 import HeaderHtml from 'html/HeaderHtml';
 import FooterHtml from 'html/FooterHtml';
+import MessageHtml from 'html/MessageHtml';
 
 window.app = new App({rootDirs: '/public/'});
 
@@ -22,4 +23,5 @@ $(document).ready(function(){
 	HeaderHtml();
 	FooterHtml();
 	window.app.lang.render('#select-lang');
+	if(window.app.args.msg) { MessageHtml(window.app.args.msg); }
 });

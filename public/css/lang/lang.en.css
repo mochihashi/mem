@@ -37,3 +37,6 @@ body[lang="en"] .lang-msg-length-short::before { content: " characters needed at
 body[lang="en"] .lang-msg-account-registered::before { content: "Account registered."; }
 body[lang="en"] .lang-msg-activation-email-sent::before { content: "An email was sent to your email address. Please click the URL in the email to activate your account."; }
 body[lang="en"] .lang-msg-error::before { content: "Error"; }
+body[lang="en"] .lang-msg-activated::before { content: "Your account is now active. Please sign in!"; }
+body[lang="en"] .lang-msg-activate-expired::before { content: "Sorry, this URL is no longer active. Please sign up again."; }
+body[lang="en"] .lang-msg-auth-failed::before { content: "Authentication failed. Please try again."; }

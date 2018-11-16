@@ -1,4 +1,7 @@
 <?php
+/**
+ * activate
+ */
 require_once('../api.php');
 
 try {
@@ -11,10 +14,15 @@ try {
 	
 	$map = Password::decodeActivateKey($key);
 	if(!$map) respondText("Invalid parameter.");
-	if(mapGet($map, 'expired')) redirect("../../?msg=activate-expired");
 	
 	$dao = new Dao($db, 'user');
 	$dao->addWhere('id', $map['id']);
+	
+	if(mapGet($map, 'expired')) {
+		$dao->delete();
+		redirect("../../?msg=activate-expired");
+	}
+	
 	$account = $dao->selectOne();
 	if(!$account || $account['email'] != $map['email']) redirect("../../");
 	
