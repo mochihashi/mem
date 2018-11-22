@@ -11,7 +11,7 @@ img { border:0;vertical-align:middle; }
 <body>
 <?php
 
-$file = $_GET['file'];
+$file = @$_GET['file'];
 
 if(!$file) {
 	print("<h1>Tables</h1>");
@@ -81,9 +81,9 @@ function getSql(&$map) {
 		$arr = array();
 		$arr[] = $col['field'];
 		$arr[] = $col['type'];
-		if($col['not-null']) $arr[] = 'NOT NULL';
-		if(strlen($col['default'])>0) $arr[] = 'DEFAULT ' . $col['default'];
-		if($col['extra']) $arr[] = $col['extra'];
+		if(@$col['not-null']) $arr[] = 'NOT NULL';
+		if(strlen(@$col['default'])>0) $arr[] = 'DEFAULT ' . $col['default'];
+		if(@$col['extra']) $arr[] = $col['extra'];
 		
 		$lines[] = implode(' ', $arr);
 	}
@@ -91,9 +91,9 @@ function getSql(&$map) {
 	if($map['primary-key']['column']) {
 		$lines[] = 'PRIMARY KEY (' . $map['primary-key']['column'] . ')';
 	}
-	$keys = $map['keys']['key'];
+	$keys = @$map['keys']['key'];
 	if($keys) {
-		if($keys['name']) $keys = array($keys);
+		if(@$keys['name']) $keys = array($keys);
 		foreach($keys as $key) {
 			if(!$key['name'] || !$key['column']) continue;
 			$lines[] = 'KEY idx_' . $map['table']['name'] . '_' . $key['name'] . ' (' . $key['column'] . ')';
@@ -103,8 +103,8 @@ function getSql(&$map) {
 	$buf .= "\t" . implode(",\n\t", $lines);
 	
 	$buf .= "\n)";
-	if($map['table']['engine']) $buf .= ' ENGINE=' . $map['table']['engine'];
-	if($map['partition']) $buf .= "\n" . trim($map['partition']);
+	if(@$map['table']['engine']) $buf .= ' ENGINE=' . $map['table']['engine'];
+	if(@$map['partition']) $buf .= "\n" . trim($map['partition']);
 	$buf .= ";";
 	return $buf;
 }

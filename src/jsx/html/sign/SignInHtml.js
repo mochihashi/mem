@@ -5,10 +5,10 @@ import AccountControlHtml from 'html/account/AccountControlHtml';
 import InputForm from 'common/InputForm';
 
 export default function() {
-	let div = html.renderOverlay(`
+	let div = html.renderOverlay('sign', `
 <div class="row">
 	<div class="col col-login mx-auto">
-		<form class="card" action="api/signIn/">
+		<form class="card" action="api/sign/in/">
 			<div class="card-header">
 				<h3 class="card-title"><span class="lang-sign-in"></span></h3>
 				<div class="card-options">
@@ -47,7 +47,7 @@ export default function() {
 		email: {required: true, type: 'email'},
 		password: {required: true, minLength: 8}
 	}, callback: function(data) {
-		html.closeOverlay();
+		html.closeOverlay('sign');
 		AccountControlHtml(data);
 	}});
 }

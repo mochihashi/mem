@@ -4,7 +4,7 @@ import SignInHtml from 'html/sign/SignInHtml';
 import SignUpHtml from 'html/sign/SignUpHtml';
 
 export default function(message) {
-	let div = html.renderOverlay(`
+	let div = html.renderOverlay('message', `
 <div class="row">
 	<div class="col col-login mx-auto">
 		<div class="card">

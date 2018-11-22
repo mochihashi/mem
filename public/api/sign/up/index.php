@@ -1,8 +1,8 @@
 <?php
 /**
- * signUp
+ * sign/up/
  */
-require_once('../api.php');
+require_once('../../api.php');
 
 try {
 	// validate
@@ -22,11 +22,12 @@ try {
 	) respondErrors($validator->getErrors());
 	
 	// insert
-	require_once('common/Password.php');
+	$user = array();
 	$name = mapGet($form, 'name');
 	$email = mapGet($form, 'email');
 	$password = mapGet($form, 'password');
 	$lang = mapGet($form, 'lang');
+	require_once('common/Password.php');
 	if(!$lang) $lang = 'en';
 	$password_hash = Password::hashPassword($password);
 	
@@ -36,11 +37,12 @@ try {
 	$dao->addValue('lang', $lang);
 	$dao->insert();
 	$id = $dao->getLastInsertId();
-	$key = Password::encodeActivateKey($id, $email);
+	$user = array('id'=>$id, 'email'=>$email, 'password_hash'=>$password_hash);
+	$key = Password::encodeActivateKey($user);
 	
 	// send email
 	require_once("lang/lang.$lang.php");
-	$url = App::URL . 'api/activate/?key=' . $key;
+	$url = App::URL . 'api/sign/activate/?key=' . $key;
 	$replaces = array('{#APPNAME}' => App::NAME, '{#URL}' => $url, '{#NAME}' => $name);
 	$title = strtr(Lang::ACTIVATE_MAIL_TITLE, $replaces);
 	$body = strtr(Lang::ACTIVATE_MAIL_BODY, $replaces);

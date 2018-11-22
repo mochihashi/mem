@@ -2,12 +2,23 @@
 
 export default class {
 	constructor({rootDirs} = {}) {
+		this.TITLE = 'memorize words';
+		
 		this.setPrototypeFunctions();
 		this.rootPath = this.getRootPath(rootDirs);
 		this.args = this.getArgs();
 		this.data = {};
 		this.includedScripts = {};
 		this.includedStyles = {};
+	}
+	
+	setTitle(title) {
+		if(title) {
+			title = title + ' - ' + this.TITLE;
+		} else {
+			title = this.TITLE;
+		}
+		document.title = title;
 	}
 	
 	setPrototypeFunctions() {

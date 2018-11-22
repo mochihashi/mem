@@ -6,7 +6,7 @@ export default class {
 		this.validator = new Validator();
 	}
 	
-	assign({form, callback, fields}) {
+	assign({form, callback, fields, validate}) {
 		this.form = form;
 		let me = this;
 		if(fields) {
@@ -29,6 +29,8 @@ export default class {
 				}
 				if(hasError) return;
 			}
+			
+			if(validate && !validate(form)) return;
 			
 			if(!me.startProcess(form)) return;
 			

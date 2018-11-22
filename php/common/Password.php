@@ -8,12 +8,22 @@ class Password {
 		return password_verify($password, $hash);
 	}
 	
-	private static function encodeKey($id, $email, $secretKey) {
+	private static function encodeKey(&$user, $secretKey) {
 		include_once('Crypt/Blowfish.php');
 		$blowfish = new Crypt_Blowfish($secretKey);
 		$time = time();
-		$key = "$time\t$id\t$email";
+		$id = $user['id'];
+		$hash = self::shortHash($user['password_hash']);
+		$key = "$time\t$id\t$hash";
 		return bin2hex($blowfish->encrypt($key));
+	}
+	
+	private static function shortHash($hash) { return substr($hash, -20); }
+	
+	public static function matchUser(&$auth, &$user) {
+		if(!$user) return false;
+		if(mapGet($auth, 'hash') != self::shortHash(mapGet($user, 'password_hash'))) return false;
+		return true;
 	}
 	
 	private static function decodeKey($key, $secretKey, $expireHours = 0) {
@@ -24,25 +34,25 @@ class Password {
 		if(count($arr) < 3) return null;
 		$time = intval($arr[0]);
 		$id = intval($arr[1]);
-		$email = $arr[2];
-		if(!$time || !$id || !$email) return null;
-		$map = array('id' => $id, 'email' => $email, 'time' => $time);
+		$hash = $arr[2];
+		if(!$time || !$id || !$hash) return null;
+		$map = array('id' => $id, 'hash' => $hash, 'time' => $time);
 		if($expireHours) {
 			if(time() - $time > $expireHours * 3600) $map['expired'] = 1;
 		}
 		return $map;
 	}
 	
-	public static function encodeActivateKey($id, $email) {
-		return self::encodeKey($id, $email, App::ACTIVATE_CRYPT_KEY);
+	public static function encodeActivateKey(&$user) {
+		return self::encodeKey($user, App::ACTIVATE_CRYPT_KEY);
 	}
 	
 	public static function decodeActivateKey($key) {
 		return self::decodeKey($key, App::ACTIVATE_CRYPT_KEY, App::ACTIVATE_EXPIRE_HOURS);
 	}
 	
-	public static function encodeCookieKey($id, $email) {
-		return self::encodeKey($id, $email, App::COOKIE_CRYPT_KEY);
+	public static function encodeCookieKey(&$user) {
+		return self::encodeKey($user, App::COOKIE_CRYPT_KEY);
 	}
 	
 	public static function decodeCookieKey($key) {

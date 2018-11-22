@@ -4,10 +4,10 @@ import SignInHtml from 'html/sign/SignInHtml';
 import InputForm from 'common/InputForm';
 
 export default function() {
-	let div = html.renderOverlay(`
+	let div = html.renderOverlay('sign', `
 <div class="row">
 	<div class="col col-login mx-auto">
-		<form class="card" action="api/signUp/">
+		<form class="card" action="api/sign/up/">
 			<div class="card-header">
 				<h3 class="card-title"><span class="lang-sign-up"></span></h3>
 				<div class="card-options">
@@ -52,7 +52,7 @@ export default function() {
 }
 
 function renderRegistered() {
-	html.renderOverlay(`
+	html.renderOverlay('sign', `
 <div class="row">
 	<div class="col col-login mx-auto">
 		<div class="card">

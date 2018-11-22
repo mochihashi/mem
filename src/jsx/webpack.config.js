@@ -1,13 +1,13 @@
 /**
  * create script.js from jsx/script.js
  * 
- * 開発時には、次のようにすると、常にコンパイルしてくれる
+ * Compile automatically during development
  * > cd jsx/
  * > `npm bin`/webpack --config webpack.config.js --mode development --watch
  */
 var path = require('path');
 module.exports = {
-    entry: path.resolve(__dirname, 'script.js'), // エントリポイントのjsxファイル
+    entry: path.resolve(__dirname, 'script.js'),
     output: {
       path: path.resolve(__dirname, '../../public/js/'),
       filename: 'script.js'

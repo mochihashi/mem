@@ -57,7 +57,7 @@ class Dao {
 	
 	public function addGroupBy($col) { $this->_groups[$col] = $col; return $this; }
 	
-	public function addOrderBy($col, $sort = 'asc') { $this->_orders[$col] = $sort; return $this; }
+	public function addOrderBy($col, $sort = 'asc') { $this->_orders[] = "$col $sort"; return $this; }
 	public function addOrderAsc($col) { return $this->addOrderBy($col, 'asc'); return $this; }
 	public function addOrderDesc($col) { return $this->addOrderBy($col, 'desc'); return $this; }
 	

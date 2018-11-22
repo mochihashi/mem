@@ -7,7 +7,7 @@ export default class {
 		this.cssPath = cssPath;
 		this.jsPath = jsPath;
 		this.texts = {};
-		let lang = window.app.cookies['lang'];
+		let lang = window.app.cookies.get('lang');
 		if(!lang || !this.langNames[lang]) {
 			lang = defaultLang;
 			let languages = window.navigator.languages || window.navigator.userLanguage || window.navigator.language || [];

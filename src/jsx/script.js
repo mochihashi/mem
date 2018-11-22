@@ -13,6 +13,7 @@ window.app
 .includeScript('https://mochihashi.github.io/static/tabler/assets/js/vendors/bootstrap.bundle.min.js')
 .includeScript('https://mochihashi.github.io/static/tabler/assets/js/tabler-core.js')
 .includeStyle('https://mochihashi.github.io/static/tabler/assets/css/tabler.css')
+.includeScript('https://mochihashi.github.io/static/js/csv.min.js')
 .includeStyle('css/style.css')
 ;
 

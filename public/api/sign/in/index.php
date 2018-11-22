@@ -1,8 +1,8 @@
 <?php
 /**
- * signIn
+ * sign/in/
  */
-require_once('../api.php');
+require_once('../../api.php');
 
 try {
 	// validate
@@ -29,7 +29,7 @@ try {
 	$res = array();
 	$res['id'] = mapGet($user, 'id');
 	$res['name'] = mapGet($user, 'name');
-	$res['auth'] = Password::encodeCookieKey($res['id'], $email);
+	$res['auth'] = Password::encodeCookieKey($user);
 	
 	respond($res);
 	

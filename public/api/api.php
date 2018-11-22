@@ -5,7 +5,9 @@
  */
 $pathes = array(get_include_path());
 $p = strpos(__FILE__, '/api/');
-if($p >= 0) $pathes[] = substr(__FILE__, 0, $p + 1);
+if($p >= 0) {
+	$pathes[] = substr(__FILE__, 0, $p) . '/';
+}
 $p = strpos(__FILE__, '/public/');
 if($p >= 0) {
 	$pathes[] = substr(__FILE__, 0, $p) . '/php/';
@@ -23,6 +25,20 @@ require_once('config/App.php');
 $form = array();
 foreach($_GET as $k => $v) { $form[$k] = $v; }
 foreach($_POST as $k => $v) { $form[$k] = $v; }
+
+function getAuth() {
+	$error = array('error'=>'auth-expired');
+	$auth = mapGet($_COOKIE, 'auth');
+	if(!$auth) respondError($error);
+	
+	require_once('common/Password.php');
+	$auth = Password::decodeCookieKey($auth);
+	if(!$auth || mapGet($auth, 'expired')) respondError($error);
+	
+	$id = mapGet($auth, 'id');
+	if(!$id) respondError($error);
+	return $auth;
+}
 
 /**
  * response
