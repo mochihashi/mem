@@ -28,6 +28,10 @@ try {
 	
 	$dao->addValue('active', 1)->update();
 	
+	require_once('common/DataFile.php');
+	$data = new DataFile();
+	$data->writeUserFile($user['id'], $user['name']);
+	
 	header("Location: ../../../?msg=activated");
 	
 } catch(Exception $e) {

@@ -26,20 +26,6 @@ $form = array();
 foreach($_GET as $k => $v) { $form[$k] = $v; }
 foreach($_POST as $k => $v) { $form[$k] = $v; }
 
-function getAuth() {
-	$error = array('error'=>'auth-expired');
-	$auth = mapGet($_COOKIE, 'auth');
-	if(!$auth) respondError($error);
-	
-	require_once('common/Password.php');
-	$auth = Password::decodeCookieKey($auth);
-	if(!$auth || mapGet($auth, 'expired')) respondError($error);
-	
-	$id = mapGet($auth, 'id');
-	if(!$id) respondError($error);
-	return $auth;
-}
-
 /**
  * response
  */

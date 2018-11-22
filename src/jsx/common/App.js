@@ -34,6 +34,22 @@ export default class {
 				return (this.toString().slice(0 - str.length) == str);
 			};
 		}
+		if(!window.escapeHtml) {
+			window.escapeHtml = function(str) {
+				if(!str) return '';
+				str = str.toString();
+				return str.replace(/[&'`"<>]/g, function(match) {
+					return {
+						'&': '&amp;',
+						"'": '&#x27;',
+						'`': '&#x60;',
+						'"': '&quot;',
+						'<': '&lt;',
+						'>': '&gt;',
+					}[match]
+				});
+			};
+		}
 	}
 	
 	adjustUrl(url) {

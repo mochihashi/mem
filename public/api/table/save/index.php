@@ -5,7 +5,8 @@
 require_once('../../api.php');
 
 try {
-	$auth = getAuth();
+	require_once('common/Auth.php');
+	$auth = Auth::getCookieAuth();
 	$userId = $auth['id'];
 
 	// validate
@@ -73,54 +74,22 @@ try {
 	// write files
 	require_once('common/DataFile.php');
 	$data = new DataFile();
-	$userInfo = array('id'=>$userId, 'name'=>$user['name']);
-	$dao = new Dao($db, 'category');
-	$categories = $dao->addWhere('user_id', $userId)->addOrderAsc('id')->addSelect('id')->addSelect('name')->select();
-	for($i = 0, $c = count($categories); $i < $c; $i++) {
-		$categories[$i]['url'] = $data->getWebPath($data->getCategoryDir($userId, $categories[$i]['id']));
-	}
-	$userInfo['categories'] = $categories;
-	
-	$dao = new Dao($db, 'word_table');
-	$tables = $dao->addWhere('user_id', $userId)->addWhere('category_id', 0)->addWhere('private', 0)
-	->addOrderDesc('id')
-	->addSelect('id')->addSelect('name')->addSelect('description')->select();
-	for($i = 0, $c = count($tables); $i < $c; $i++) {
-		$tables[$i]['url'] = $data->getWebPath($data->getTableDir($userId, $tables[$i]['id']));
-	}
-	$userInfo['tables'] = $tables;
-	
-	$userDir = $data->getUserDir($userId);
-	$data->writeJson($userDir, $userInfo);
-	$html = buildPageTypeHtml('user') . buildLinkHtml($categories) . buildLinkHtml($tables);
-	$data->writeHtml($userDir, $html, $userInfo['name']);
+	$data->writeUserFile($userId, $user['name']);
 	
 	if($categoryId) {
-		$categoryInfo = array('id'=>$categoryId, 'name'=>$category);
-		$dao = new Dao($db, 'word_table');
-		$tables = $dao->addWhere('user_id', $userId)->addWhere('category_id', $categoryId)->addWhere('private', 0)
-		->addOrderDesc('id')
-		->addSelect('id')->addSelect('name')->addSelect('description')->select();
-		for($i = 0, $c = count($tables); $i < $c; $i++) {
-			$tables[$i]['url'] = $data->getWebPath($data->getTableDir($userId, $tables[$i]['id']));
-		}
-		$categoryInfo['tables'] = $tables;
-		
-		$categoryDir = $data->getCategoryDir($userId, $categoryId);
-		$data->writeJson($categoryDir, $categoryInfo);
-		$html = buildPageTypeHtml('category') . buildLinkHtml($tables);
-		$data->writeHtml($categoryDir, $html, $category);
+		$data->writeCategoryFile($userId, $categoryId, $category);
 	}
 	
-	$html = buildPageTypeHtml('table') . '
-	<input type="hidden" name="user_id" value="' . $userId . '" />
-<input type="hidden" name="category_id" value="' . $categoryId . '" />
+	$html = $data->getPageTypeHtml('table')
+	. $data->getUserLinkHtml()
+	. $data->getCategoryLinkHtml()
+	. '
 <input type="hidden" name="table_id" value="' . $tableId . '" />
+<input type="hidden" name="private" value="' . $private . '" />
 <h1 class="title">' . $title . '</h1>
 <h4 class="description">' . $description . '</h4>
-<pre class="words">' . $words . '</pre>
-<a href="' . $data->getWebPath($userDir) . '">' . $user['name'] . '</a>';
-	if($categoryId) $html . '<a href="' + $data->getWebPath($categoryDir) . '">' . $category . '</a>';
+<pre class="words">' . $words . '</pre>';
+
 	$tableDir = $data->getTableDir($userId, $tableId);
 	$data->writeHtml($tableDir, $html, $title, $description);
 	
@@ -129,20 +98,3 @@ try {
 } catch(Exception $e) {
 	respondException($e);
 }
-
-function buildPageTypeHtml($type) {
-	return '<input type="hidden" name="page_type" value="' . $type . '" />';
-}
-
-function buildLinkHtml(&$list) {
-	$arr = array();
-	foreach($list as $row) {
-		$url = @$row['url'];
-		$name = @$row['name'];
-		$description = @$row['description'];
-		if(!$url || !$name) continue;
-		$arr[] = '<a href="' . $url . '">' . $name . '</a>' . $description;
-	}
-	return implode("<br/>\n", $arr);
-}
-

@@ -33,24 +33,30 @@ export default class {
 			if(validate && !validate(form)) return;
 			
 			if(!me.startProcess(form)) return;
-			
 			$.ajax({
 				url: window.app.adjustUrl(form.attr('action')),
 				type: "POST",
 				data: form.serialize(),
-				dataType: "json",
+				dataType: "text",
 				timeout: 10000
-			}).done(function(data, textStatus, jqXHR) {
-				if(data.responseMessages) {
-					me.setMessage(form);
-					for(let i = data.responseMessages.length - 1; i >= 0; i--) {
-						me.addMessage(form, data.responseMessages[i], i);
+			}).done(function(text, textStatus, jqXHR) {
+				try {
+					let data = JSON.parse(text);
+					if(data.responseMessages) {
+						me.setMessage(form);
+						for(let i = data.responseMessages.length - 1; i >= 0; i--) {
+							me.addMessage(form, data.responseMessages[i], i);
+						}
 					}
+					if(!data.error && callback) callback(data);
+				} catch(e) {
+					console.log(e);
+					console.log(text);
 				}
-				if(!data.error && callback) callback(data);
 			}).fail(function(jqXHR, textStatus, errorThrown) {
 				let error = jqXHR.status + ' ' + textStatus;
 				me.setMessage(form, {error: 'error', suffix: ': ' + jqXHR.status + ' ' + textStatus});
+				console.log(errorThrown);
 			}).always(function() {
 				me.endProcess(form);
 			});

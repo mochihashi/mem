@@ -5,10 +5,12 @@
 require_once('../../api.php');
 
 try {
-	$auth = getAuth();
+	require_once('common/Auth.php');
+	$auth = Auth::getCookieAuth();
 	$id = $auth['id'];
 	
 	// db validate
+	require_once('common/Password.php');
 	require_once('config/db.php');
 	require_once('common/Dao.php');
 	$dao = new Dao($db, 'user');
@@ -16,12 +18,7 @@ try {
 	if(!Password::matchUser($auth, $user)) respondError($error);
 	
 	// return auth
-	$res = array();
-	$res['id'] = $id;
-	$res['name'] = mapGet($user, 'name');
-	$res['auth'] = Password::encodeCookieKey($user);
-	
-	respond($res);
+	respond(Auth::createResponseAuth($user));
 	
 } catch(Exception $e) {
 	respondException($e);

@@ -4,6 +4,9 @@ import Lang from 'common/Lang';
 import HeaderHtml from 'html/HeaderHtml';
 import FooterHtml from 'html/FooterHtml';
 import MessageHtml from 'html/MessageHtml';
+import TableHtml from 'html/table/TableHtml';
+import CategoryHtml from 'html/list/CategoryHtml';
+import UserHtml from 'html/list/UserHtml';
 
 window.app = new App({rootDirs: '/public/'});
 
@@ -13,7 +16,6 @@ window.app
 .includeScript('https://mochihashi.github.io/static/tabler/assets/js/vendors/bootstrap.bundle.min.js')
 .includeScript('https://mochihashi.github.io/static/tabler/assets/js/tabler-core.js')
 .includeStyle('https://mochihashi.github.io/static/tabler/assets/css/tabler.css')
-.includeScript('https://mochihashi.github.io/static/js/csv.min.js')
 .includeStyle('css/style.css')
 ;
 
@@ -25,4 +27,8 @@ $(document).ready(function(){
 	FooterHtml();
 	window.app.lang.render('#select-lang');
 	if(window.app.args.msg) { MessageHtml(window.app.args.msg); }
+	let pageType = $('#main-container [name="page_type"]').val();
+	if(pageType == 'table') TableHtml(); 
+	else if(pageType == 'category') CategoryHtml(); 
+	else if(pageType == 'user') UserHtml(); 
 });

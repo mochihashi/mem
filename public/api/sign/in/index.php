@@ -26,12 +26,8 @@ try {
 	}
 	
 	// return auth
-	$res = array();
-	$res['id'] = mapGet($user, 'id');
-	$res['name'] = mapGet($user, 'name');
-	$res['auth'] = Password::encodeCookieKey($user);
-	
-	respond($res);
+	require_once('common/Auth.php');
+	respond(Auth::createResponseAuth($user));
 	
 } catch(Exception $e) {
 	respondException($e);

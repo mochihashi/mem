@@ -16,6 +16,7 @@ I don't know	No lo sé`;
 <div class="row">
 	<div class="col-12">
 		<form class="card" action="api/table/save/">
+			<input type="hidden" name="table_id" value="${tableId || ''}" />
 			<div class="card-header">
 				<div class="form-group col-10 mb-0">
 				<input type="text" name="title" class="form-control" value="${title || ''}" placeholder="Title" />
@@ -43,14 +44,6 @@ I don't know	No lo sé`;
 							<label class="form-label"><i class="fe fe-folder"></i> <span class="lang-category"></span></label>
 							<div class="input-group">
 								<input type="text" name="category" class="form-control" value="${category || ''}">
-								<!--
-								<div class="input-group-append">
-									<button data-toggle="dropdown" type="button" class="btn btn-secondary dropdown-toggle"></button>
-									<div class="dropdown-menu dropdown-menu-right">
-										<a class="dropdown-item" href="javascript:void(0);" onclick="$(this).parent().parent().parent().find('input').val($(this).text());">Study Japanese</a>
-									</div>
-								</div>
-								-->
 							</div>
 						</div>
 					</div>
@@ -58,7 +51,7 @@ I don't know	No lo sé`;
 						<div class="form-group">
 							<label class="form-label"><span class="lang-option"></span></label>
 							<label class="custom-switch">
-								<input type="checkbox" name="private" class="custom-switch-input" ${isPrivate ? 'checked' : ''}>
+								<input type="checkbox" class="custom-switch-input" name="private" value="1" ${isPrivate ? 'checked' : ''}>
 								<span class="custom-switch-indicator"></span>
 								<span class="custom-switch-description"><span class="lang-private"></span></span>
 							</label>
@@ -101,4 +94,24 @@ I don't know	No lo sé`;
 	}, callback: function(data) {
 		if(data.table_path) location.href = data.table_path;
 	}});
+	
+	if(window.app.user && window.app.user.dir) {
+		$.ajax({ url: window.app.user.dir + 'index.json', type: "GET", dataType: "json", timeout: 10000
+		}).done(function(data, textStatus, jqXHR) {
+			if(data.categories && data.categories.length > 0) {
+				let links = '';
+				for(let i in data.categories) {
+					let name = data.categories[i].name;
+					links += `<a class="dropdown-item" href="javascript:void(0);" onclick="$(this).parent().parent().parent().find('input').val('${name}');">${name}</a>`;
+				}
+				div.find('[name="category"]').parent().append(`
+<div class="input-group-append">
+	<button data-toggle="dropdown" type="button" class="btn btn-secondary dropdown-toggle"></button>
+	<div class="dropdown-menu dropdown-menu-right">${links}</div>
+</div>
+				`);
+				
+			}
+		});
+	}
 }

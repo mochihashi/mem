@@ -4,6 +4,7 @@ import SignOutHtml from 'html/sign/SignOutHtml';
 
 export default function(data) {
 	window.app.cookies.set('auth', data.auth);
+	window.app.user = data;
 
 	let div = html.renderTo('#account-control', `
 <div class="dropdown" id="div-login-user">
@@ -14,7 +15,7 @@ export default function(data) {
 	</span>
 	</a>
 	<div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-		<a class="dropdown-item" href="account.html">
+		<a class="dropdown-item" href="${data.dir}">
 		<i class="dropdown-icon fe fe-home"></i> <span class="lang-my-page"></span>
 		</a>
 		<div class="dropdown-divider"></div>

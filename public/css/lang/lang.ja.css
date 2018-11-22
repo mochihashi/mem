@@ -43,3 +43,4 @@ body[lang="ja"] .lang-msg-activated::before { content: "アカウントが有効
 body[lang="ja"] .lang-msg-activate-expired::before { content: "申し訳ございません。有効期限が切れました。お手数ですが再度ご登録をお願いいたします。"; }
 body[lang="ja"] .lang-msg-auth-failed::before { content: "ログインできません。メールアドレスとパスワードをお確かめください。"; }
 body[lang="ja"] .lang-msg-auth-expired::before { content: "ログイン有効期限が切れました。再度ログインしてください。"; }
+body[lang="ja"] .lang-msg-no-data::before { content: "登録されたデータがありません。"; }

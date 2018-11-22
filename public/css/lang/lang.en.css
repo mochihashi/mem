@@ -43,3 +43,4 @@ body[lang="en"] .lang-msg-activated::before { content: "Your account is now acti
 body[lang="en"] .lang-msg-activate-expired::before { content: "Sorry, this URL is no longer active. Please sign up again."; }
 body[lang="en"] .lang-msg-auth-failed::before { content: "Authentication failed. Please try again."; }
 body[lang="en"] .lang-msg-auth-expired::before { content: "Authentication expired. Please sign in again."; }
+body[lang="en"] .lang-msg-no-data::before { content: "No data registered."; }
