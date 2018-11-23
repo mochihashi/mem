@@ -25,18 +25,20 @@ try {
 	
 	$tableId = mapGet($form, 'table_id');
 	$overwrite = mapGet($form, 'overwrite');
+	$title = mapGet($form, 'title');
+	$words = mapGet($form, 'words');
+	$description = mapGet($form, 'description');
+	$category = mapGet($form, 'category');
+	$private = mapGet($form, 'private') ? 1 : 0;
 	if(!$overwrite) $tableId = 0;
+	$form['name'] = $title;
+	
 	$dao = new Dao($db, 'word_table');
 	$dao->addWhere('user_id', $userId);
 	if(!$validator->validateUniqueField($dao, 'name', $tableId)
 	) respondErrors($validator->getErrors());
 	
 	// insert
-	$title = mapGet($form, 'title');
-	$words = mapGet($form, 'words');
-	$description = mapGet($form, 'description');
-	$category = mapGet($form, 'category');
-	$private = mapGet($form, 'private') ? 1 : 0;
 	
 	$categoryId = 0;
 	if($category) {

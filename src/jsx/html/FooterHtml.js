@@ -1,8 +1,8 @@
 'use strict';
-import * as html from 'html/Html';
+import * as container from 'html/Container';
 
 export default function() {
-	html.renderTo('.footer', `
+	container.renderTo('.footer', `
 <div class="container">
 	<div class="row align-items-center flex-row">
 		<div class="col-12 col-lg-auto mt-3 mt-lg-0 text-center">

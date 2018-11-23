@@ -1,7 +1,9 @@
 'use strict';
-import * as html from 'html/Html';
+import * as container from 'html/Container';
+import Table from 'common/Table';
 import InputForm from 'common/InputForm';
 import SignInHtml from 'html/sign/SignInHtml';
+import TableTestHtml from 'html/table/TableTestHtml';
 
 export default function({title, words, description, category, isPrivate, tableId}) {
 	if(!words) words = `English	Spanish
@@ -12,7 +14,7 @@ Thank you	Gracias
 Sorry	Lo siento
 I don't know	No lo sé`;
 
-	let div = html.renderOverlay('edit', `
+	let div = container.renderOverlay('edit', `
 <div class="row">
 	<div class="col-12">
 		<form class="card" action="api/table/save/">
@@ -27,7 +29,7 @@ I don't know	No lo sé`;
 			</div>
 			<div class="card-body">
 				<div class="btn-list">
-					<button class="btn btn-primary btn-lg"><i class="fe fe-play mr-2"></i><span class="lang-start-test"></span></button>
+					<button name="btn-test" class="btn btn-primary btn-lg"><i class="fe fe-play mr-2"></i><span class="lang-start-test"></span></button>
 				</div>
 				<div class="form-group mt-2">
 					<textarea rows="9" name="words" class="form-control">${words}</textarea>
@@ -70,22 +72,19 @@ I don't know	No lo sé`;
 	</div><!-- .col-12 -->
 </div><!-- .row -->
 	`);
+	
 	let obj = div.find('[name="words"]');
 	obj[0].setSelectionRange(0, obj.text().length); obj.focus();
 	if(!tableId) div.find('[name="control-overwrite"]').hide();
+	
 	let inputForm = new InputForm();
 	inputForm.assign({form: div.find('form'), fields: {
 		title: {required: true},
 		words: {required: true}
 	}, validate: function(form) {
 		let text = div.find('[name="words"]').val();
-		let arr = CSV.parse(text, {delimiter: '\t'});
-		if(arr.length < 3) {
-			inputForm.setMessage(form, {'field':'words', 'error':'row-short', 'prefix':3}); return false;
-		}
-		if(arr[0].length < 2) {
-			inputForm.setMessage(form, {'field':'words', 'error':'column-short', 'prefix':2}); return false;
-		}
+		let list = new Table().parse(words, inputForm);
+		if(!list) return false;
 		if(!window.app.cookies.get('auth')) {
 			SignInHtml();
 			return false;
@@ -94,6 +93,15 @@ I don't know	No lo sé`;
 	}, callback: function(data) {
 		if(data.table_path) location.href = data.table_path;
 	}});
+	
+	div.find('[name="btn-test"]').click((event)=>{
+		event.stopPropagation(); event.preventDefault();
+		let title = div.find('[name="title"]').val();
+		let words = div.find('[name="words"]').val();
+		let list = new Table().parse(words, inputForm);
+		if(!list) return false;
+		TableTestHtml({title: title, list: list});
+	});
 	
 	if(window.app.user && window.app.user.dir) {
 		$.ajax({ url: window.app.user.dir + 'index.json', type: "GET", dataType: "json", timeout: 10000

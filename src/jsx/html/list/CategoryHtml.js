@@ -1,5 +1,5 @@
 'use strict';
-import * as html from 'html/Html';
+import * as container from 'html/Container';
 
 export default function() {
 	let div = $('#main-container');
@@ -8,7 +8,7 @@ export default function() {
 	let categoryName = div.find('.category').text();
 	let categoryDir = div.find('.category').attr('href');
 
-	div = html.renderMain(`
+	div = container.renderMain(`
 <div class="page-header">
 	<h1 class="page-title">${categoryName}</h1>
 	<div class="d-flex align-items-center pt-5 col-12">

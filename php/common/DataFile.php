@@ -12,9 +12,14 @@ class DataFile {
 		$this->_webRoot = substr($webPath, 0, strpos($webPath, '/api/')) . '/';
 	}
 	
-	public function getUserDir($userId) { return "data/u$userId/"; }
-	public function getCategoryDir($userId, $categoryId) { return "data/u$userId/c$categoryId/"; }
-	public function getTableDir($userId, $tableId) { return "data/u$userId/t$tableId/"; }
+	public function getUserDir($userId) {
+		$s = "u$userId";
+		$p = ceil(strlen($s) / 2);
+		$s = substr($s, 0, $p) . '/' . substr($s, $p);
+		return "data/$s/";
+	}
+	public function getCategoryDir($userId, $categoryId) { return joinPath($this->getUserDir($userId), "c$categoryId/"); }
+	public function getTableDir($userId, $tableId) { return joinPath($this->getUserDir($userId), "t$tableId/"); }
 	
 	public function getFilePath($dir) { return joinPath($this->_fileRoot, $dir); }
 	public function getWebPath($dir) { return joinPath($this->_webRoot, $dir); }

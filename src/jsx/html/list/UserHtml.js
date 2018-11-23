@@ -1,12 +1,12 @@
 'use strict';
-import * as html from 'html/Html';
+import * as container from 'html/Container';
 
 export default function() {
 	let div = $('#main-container');
 	let userName = div.find('.user').text();
 	let userDir = div.find('.user').attr('href');
 
-	div = html.renderMain(`
+	div = container.renderMain(`
 <div class="page-header">
 	<h1 class="page-title">
 		<div class="d-flex align-items-center pt-3">

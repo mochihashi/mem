@@ -1,11 +1,11 @@
 'use strict';
-import * as html from 'html/Html';
+import * as container from 'html/Container';
 import SignUpHtml from 'html/sign/SignUpHtml';
 import AccountControlHtml from 'html/account/AccountControlHtml';
 import InputForm from 'common/InputForm';
 
 export default function() {
-	let div = html.renderOverlay('sign', `
+	let div = container.renderOverlay('sign', `
 <div class="row">
 	<div class="col col-login mx-auto">
 		<form class="card" action="api/sign/in/">

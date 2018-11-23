@@ -32,6 +32,10 @@ export function renderOverlay(pageName, html) {
 		event.preventDefault();
 		closeOverlay(pageName);
 	});
+	me.find('.card-options-fullscreen').click(function(event){
+		event.preventDefault();
+		me.find('.card').toggleClass('card-fullscreen');
+	});
 	return me;
 }
 

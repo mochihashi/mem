@@ -1,6 +1,8 @@
 'use strict';
-import * as html from 'html/Html';
+import * as container from 'html/Container';
+import Table from 'common/Table';
 import TableEditHtml from 'html/table/TableEditHtml';
+import TableTestHtml from 'html/table/TableTestHtml';
 
 export default function() {
 	let div = $('#main-container');
@@ -17,9 +19,9 @@ export default function() {
 	let words = div.find('.words').text();
 	let urlEsc = encodeURIComponent(document.URL);
 	
-	window.app.data.list = CSV.parse(words, {delimiter: '\t'});
+	let list = new Table().parse(words);
 	
-	div = html.renderMain(`
+	div = container.renderMain(`
 <div class="row">
 	<div class="col-lg-9">
 		<div class="card">
@@ -45,7 +47,7 @@ export default function() {
 					<button class="btn btn-primary btn-lg" name="btn-test"><i class="fe fe-play mr-2"></i>Start Test</button>
 					<button class="btn btn-outline-primary" name="btn-edit"><i class="fe fe-edit mr-2"></i>Edit</button>
 				</div>
-				<div class="table-responsive mt-2">${getTableHtml(window.app.data.list)}</div>
+				<div class="table-responsive mt-2">${getTableHtml(list)}</div>
 			</div>
 		</div>
 	</div>
@@ -59,6 +61,10 @@ export default function() {
 	`);
 	div.find('[name="btn-edit"]').click(()=>TableEditHtml({
 		title: title, words: words, description: description, category: categoryName, isPrivate: isPrivate, tableId: tableId
+	}));
+	if(!list) div.find('[name="btn-test"]').hide();
+	div.find('[name="btn-test"]').click(()=>TableTestHtml({
+		title: title, list: list
 	}));
 	if(!categoryId) {
 		div.find('#a-category').hide();
@@ -100,6 +106,7 @@ export default function() {
 }
 
 function getTableHtml(list) {
+	if(!list) return '';
 	let table = '<table class="table mb-0 table-bordered">';
 	for(let r = 0; r < list.length; r++) {
 		if(r == 0) table += '<thead class="thead-light">';

@@ -1,10 +1,10 @@
 'use strict';
-import * as html from 'html/Html';
+import * as container from 'html/Container';
 import SignInHtml from 'html/sign/SignInHtml';
 import SignUpHtml from 'html/sign/SignUpHtml';
 
 export default function(message) {
-	let div = html.renderOverlay('message', `
+	let div = container.renderOverlay('message', `
 <div class="row">
 	<div class="col col-login mx-auto">
 		<div class="card">

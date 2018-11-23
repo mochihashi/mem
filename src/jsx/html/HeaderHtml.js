@@ -1,11 +1,11 @@
 'use strict';
-import * as html from 'html/Html';
+import * as container from 'html/Container';
 import SignOutHtml from 'html/sign/SignOutHtml';
 import AccountControlHtml from 'html/account/AccountControlHtml';
 import TableEditHtml from 'html/table/TableEditHtml';
 
 export default function() {
-	let div = html.renderTo('.header', `
+	let div = container.renderTo('.header', `
 <div class="container">
 	<div class="d-flex">
 		<a class="header-brand" href="./">

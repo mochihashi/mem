@@ -1,11 +1,11 @@
 
-test-question-area, .test-answer-area {
+.test-row-question, .test-row-answer, .test-row-end {
 	min-height: 30vh;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 }
-.test-answer-area {
+.test-row-answer, .test-row-end {
 	min-height: 45vh;
 }
 
@@ -28,9 +28,12 @@ test-question-area, .test-answer-area {
 .test-answer {
 	font-size: 2.5vw;
 }
-.test-options .btn-lg, .test-yesno .btn-lg {
+.test-row-options .btn-lg, .test-row-yesno .btn-lg {
 	font-size: 2vw;
 	white-space: normal;
+}
+.test-ok {
+	color: #467fcf;
 }
 
 @media (max-width: 768px) {
@@ -40,7 +43,7 @@ test-question-area, .test-answer-area {
 	.test-answer {
 		font-size: 1.2rem;
 	}
-	.test-options .btn-lg, .test-yesno .btn-lg {
+	.test-row-options .btn-lg, .test-row-yesno .btn-lg {
 		font-size: 1rem;
 	}
 }

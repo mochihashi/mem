@@ -1,12 +1,12 @@
 'use strict';
-import * as html from 'html/Html';
+import * as container from 'html/Container';
 import SignOutHtml from 'html/sign/SignOutHtml';
 
 export default function(data) {
 	window.app.cookies.set('auth', data.auth);
 	window.app.user = data;
 
-	let div = html.renderTo('#account-control', `
+	let div = container.renderTo('#account-control', `
 <div class="dropdown" id="div-login-user">
 	<a href="javascript:void(0)" class="nav-link pr-0 leading-none" data-toggle="dropdown">
 	<span class="avatar"><i class="fe fe-user"></i></span>

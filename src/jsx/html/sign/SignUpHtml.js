@@ -1,10 +1,10 @@
 'use strict';
-import * as html from 'html/Html';
+import * as container from 'html/Container';
 import SignInHtml from 'html/sign/SignInHtml';
 import InputForm from 'common/InputForm';
 
 export default function() {
-	let div = html.renderOverlay('sign', `
+	let div = container.renderOverlay('sign', `
 <div class="row">
 	<div class="col col-login mx-auto">
 		<form class="card" action="api/sign/up/">
@@ -52,7 +52,7 @@ export default function() {
 }
 
 function renderRegistered() {
-	html.renderOverlay('sign', `
+	container.renderOverlay('sign', `
 <div class="row">
 	<div class="col col-login mx-auto">
 		<div class="card">
