@@ -1,6 +1,6 @@
 <?php
 /**
- * sign/up/
+ * account/signUp/
  */
 require_once('../../api.php');
 
@@ -8,7 +8,7 @@ try {
 	// validate
 	require_once('common/Validator.php');
 	$validator = new Validator($form);
-	if(!$validator->validateField('name', array('required' => true))
+	if(!$validator->validateField('name', array('required' => true, 'minLength' => 3))
 	|| !$validator->validateField('email', array('required' => true, 'type' => 'email'))
 	|| !$validator->validateField('password', array('required' => true, 'minLength' => 8))
 	) respondErrors($validator->getErrors());
@@ -22,7 +22,6 @@ try {
 	) respondErrors($validator->getErrors());
 	
 	// insert
-	$user = array();
 	$name = mapGet($form, 'name');
 	$email = mapGet($form, 'email');
 	$password = mapGet($form, 'password');
@@ -42,7 +41,7 @@ try {
 	
 	// send email
 	require_once("lang/lang.$lang.php");
-	$url = App::URL . 'api/sign/activate/?key=' . $key;
+	$url = App::URL . 'api/account/activate/?key=' . $key;
 	$replaces = array('{#APPNAME}' => App::NAME, '{#URL}' => $url, '{#NAME}' => $name);
 	$title = strtr(Lang::ACTIVATE_MAIL_TITLE, $replaces);
 	$body = strtr(Lang::ACTIVATE_MAIL_BODY, $replaces);

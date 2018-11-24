@@ -1,6 +1,6 @@
 'use strict';
 import * as container from 'html/Container';
-import SignUpHtml from 'html/sign/SignUpHtml';
+import SignUpHtml from 'html/account/SignUpHtml';
 import AccountControlHtml from 'html/account/AccountControlHtml';
 import InputForm from 'common/InputForm';
 
@@ -8,7 +8,7 @@ export default function() {
 	let div = container.renderOverlay('sign', `
 <div class="row">
 	<div class="col col-login mx-auto">
-		<form class="card" action="api/sign/in/">
+		<form class="card" action="api/account/signIn/">
 			<div class="card-header">
 				<h3 class="card-title"><span class="lang-sign-in"></span></h3>
 				<div class="card-options">
@@ -47,7 +47,7 @@ export default function() {
 		email: {required: true, type: 'email'},
 		password: {required: true, minLength: 8}
 	}, callback: function(data) {
-		html.closeOverlay('sign');
+		container.closeOverlay('sign');
 		AccountControlHtml(data);
 	}});
 }

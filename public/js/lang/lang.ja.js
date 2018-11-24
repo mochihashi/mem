@@ -1,4 +1,5 @@
 window.app.lang.texts.ja = {
-	"confirm-delete": "削除します。よろしいですか?",
-	"confirm-regist": "登録します。よろしいですか?",
+	"delete?": "削除します。よろしいですか?",
+	"save?": "保存します。よろしいですか?",
+	"update?": "更新します。よろしいですか?",
 };

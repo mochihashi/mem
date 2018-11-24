@@ -1,6 +1,6 @@
 <?php
 /**
- * sign/in/
+ * account/signIn/
  */
 require_once('../../api.php');
 

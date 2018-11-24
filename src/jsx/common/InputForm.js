@@ -6,7 +6,7 @@ export default class {
 		this.validator = new Validator();
 	}
 	
-	assign({form, callback, fields, validate}) {
+	assign({form, callback, fields, validate, confirmMessage}) {
 		this.form = form;
 		let me = this;
 		if(fields) {
@@ -17,7 +17,7 @@ export default class {
 		}
 		
 		form.submit(function(event){
-			event.preventDefault();
+			event.preventDefault(); event.stopPropagation();
 			
 			if(fields) {
 				let hasError = false;
@@ -32,6 +32,8 @@ export default class {
 			
 			if(validate && !validate(form)) return;
 			
+			if(confirmMessage && !confirm(window.app.lang.getText(confirmMessage))) return;
+			
 			if(!me.startProcess(form)) return;
 			$.ajax({
 				url: window.app.adjustUrl(form.attr('action')),
@@ -43,9 +45,9 @@ export default class {
 				try {
 					let data = JSON.parse(text);
 					if(data.responseMessages) {
-						me.setMessage(form);
+						me.setMessage();
 						for(let i = data.responseMessages.length - 1; i >= 0; i--) {
-							me.addMessage(form, data.responseMessages[i], i);
+							me.addMessage(data.responseMessages[i], i);
 						}
 					}
 					if(!data.error && callback) callback(data);
@@ -55,7 +57,7 @@ export default class {
 				}
 			}).fail(function(jqXHR, textStatus, errorThrown) {
 				let error = jqXHR.status + ' ' + textStatus;
-				me.setMessage(form, {error: 'error', suffix: ': ' + jqXHR.status + ' ' + textStatus});
+				me.setMessage({error: 'error', suffix: ': ' + jqXHR.status + ' ' + textStatus});
 				console.log(errorThrown);
 			}).always(function() {
 				me.endProcess(form);
@@ -63,11 +65,11 @@ export default class {
 		});
 	}
 	
-	setMessage(form, message) {
-		form.parent().find('.alert').remove();
-		if(message) this.addMessage(form, message);
+	setMessage(message) {
+		this.form.parent().find('.alert').remove();
+		if(message) this.addMessage(message);
 	}
-	addMessage(form, message, index) {
+	addMessage(message, index) {
 		let type = (message.error ? 'danger' : 'primary');
 		let text = message.text ? message.text : message.error;
 		let prefix = message.prefix || '';
@@ -75,7 +77,7 @@ export default class {
 		let field = message.field || '';
 		if(text) text = `<span class="lang-msg-${text}"></span>`;
 		if(message.error && field) {
-			let obj = form.find('[name="' + field + '"]');
+			let obj = this.form.find('[name="' + field + '"]');
 			if(obj.length == 1) {
 				obj.addClass('is-invalid');
 				obj.parent().append(`<div class="invalid-feedback">${prefix}${text}${suffix}</div>`);
@@ -84,7 +86,7 @@ export default class {
 			}
 		}
 		if(field) field = `[<span class="lang-${field}"></span>] `;
-		form.parent().prepend(`
+		this.form.parent().prepend(`
 <div class="alert alert-${type} alert-dismissible">
 	<button type="button" class="close" data-dismiss="alert"></button>
 	${field}${prefix}${text}${suffix}

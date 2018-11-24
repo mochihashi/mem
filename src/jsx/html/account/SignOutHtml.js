@@ -1,6 +1,6 @@
 'use strict';
 import * as container from 'html/Container';
-import SignInHtml from 'html/sign/SignInHtml';
+import SignInHtml from 'html/account/SignInHtml';
 
 export default function({init = false}) {
 	let div = container.renderTo('#account-control', `

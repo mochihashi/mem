@@ -9,11 +9,11 @@ export default class {
 	parse(text, inputForm) {
 		let arr = CSV.parse(text, {delimiter: '\t'});
 		if(arr.length < 3) {
-			if(inputForm) inputForm.setMessage(form, {'field':'words', 'error':'row-short', 'prefix':3});
+			if(inputForm) inputForm.setMessage({'field':'words', 'error':'row-short', 'prefix':3});
 			return null;
 		}
 		if(arr[0].length < 2) {
-			if(inputForm) inputForm.setMessage(form, {'field':'words', 'error':'column-short', 'prefix':2});
+			if(inputForm) inputForm.setMessage({'field':'words', 'error':'column-short', 'prefix':2});
 			return null;
 		}
 		for(let r = 0; r < arr.length; r++) {

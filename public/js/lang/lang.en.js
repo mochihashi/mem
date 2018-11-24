@@ -1,4 +1,5 @@
 window.app.lang.texts.en = {
-	"confirm-delete": "Are you sure to delete?",
-	"confirm-regist": "Are you sure to regist?",
+	"delete?": "Do you want to delete this item?",
+	"save?": "Do you want to save this?",
+	"update?": "Do you want to update?",
 };

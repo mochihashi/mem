@@ -2,7 +2,7 @@
 import * as container from 'html/Container';
 import Table from 'common/Table';
 import InputForm from 'common/InputForm';
-import SignInHtml from 'html/sign/SignInHtml';
+import SignInHtml from 'html/account/SignInHtml';
 import TableTestHtml from 'html/table/TableTestHtml';
 
 export default function({title, words, description, category, isPrivate, tableId}) {
@@ -92,19 +92,19 @@ I don't know	No lo sé`;
 		return true;
 	}, callback: function(data) {
 		if(data.table_path) location.href = data.table_path;
-	}});
+	}, confirmMessage: 'save?'});
 	
 	div.find('[name="btn-test"]').click((event)=>{
-		event.stopPropagation(); event.preventDefault();
 		let title = div.find('[name="title"]').val();
 		let words = div.find('[name="words"]').val();
 		let list = new Table().parse(words, inputForm);
 		if(!list) return false;
 		TableTestHtml({title: title, list: list});
+		return false;
 	});
 	
-	if(window.app.user && window.app.user.dir) {
-		$.ajax({ url: window.app.user.dir + 'index.json', type: "GET", dataType: "json", timeout: 10000
+	if(window.app.account && window.app.account.dir) {
+		$.ajax({ url: window.app.account.dir + 'index.json', type: "GET", dataType: "json", timeout: 10000
 		}).done(function(data, textStatus, jqXHR) {
 			if(data.categories && data.categories.length > 0) {
 				let links = '';

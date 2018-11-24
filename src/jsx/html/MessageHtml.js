@@ -1,7 +1,7 @@
 'use strict';
 import * as container from 'html/Container';
-import SignInHtml from 'html/sign/SignInHtml';
-import SignUpHtml from 'html/sign/SignUpHtml';
+import SignInHtml from 'html/account/SignInHtml';
+import SignUpHtml from 'html/account/SignUpHtml';
 
 export default function(message) {
 	let div = container.renderOverlay('message', `

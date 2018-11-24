@@ -1,6 +1,6 @@
 'use strict';
 import * as container from 'html/Container';
-import SignOutHtml from 'html/sign/SignOutHtml';
+import SignOutHtml from 'html/account/SignOutHtml';
 import AccountControlHtml from 'html/account/AccountControlHtml';
 import TableEditHtml from 'html/table/TableEditHtml';
 
@@ -26,7 +26,7 @@ export default function() {
 	SignOutHtml({init: true});
 	if(window.app.cookies.get('auth')) {
 		$.ajax({
-			url: window.app.adjustUrl('api/sign/auto/'),
+			url: window.app.adjustUrl('api/account/autoSignIn/'),
 			type: "POST",
 			dataType: "json",
 			timeout: 10000

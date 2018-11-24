@@ -1,6 +1,6 @@
 <?php
 /**
- * sign/activate/
+ * account/activate/
  */
 require_once('../../api.php');
 

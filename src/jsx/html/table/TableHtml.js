@@ -44,8 +44,8 @@ export default function() {
 				</div>
 				<div class="mt-5">${description}</div>
 				<div class="btn-list mt-5">
-					<button class="btn btn-primary btn-lg" name="btn-test"><i class="fe fe-play mr-2"></i>Start Test</button>
-					<button class="btn btn-outline-primary" name="btn-edit"><i class="fe fe-edit mr-2"></i>Edit</button>
+					<button class="btn btn-primary btn-lg" name="btn-test"><i class="fe fe-play mr-2"></i><span class="lang-start-test"></span></button>
+					<button class="btn btn-outline-primary" name="btn-edit"><i class="fe fe-edit mr-2"></i><span class="lang-edit"></span></button>
 				</div>
 				<div class="table-responsive mt-2">${getTableHtml(list)}</div>
 			</div>
@@ -59,13 +59,13 @@ export default function() {
 	</div>
 </div>
 	`);
-	div.find('[name="btn-edit"]').click(()=>TableEditHtml({
+	div.find('[name="btn-edit"]').click(()=>{TableEditHtml({
 		title: title, words: words, description: description, category: categoryName, isPrivate: isPrivate, tableId: tableId
-	}));
+	}); return false;});
 	if(!list) div.find('[name="btn-test"]').hide();
-	div.find('[name="btn-test"]').click(()=>TableTestHtml({
+	div.find('[name="btn-test"]').click(()=>{TableTestHtml({
 		title: title, list: list
-	}));
+	}); return false;});
 	if(!categoryId) {
 		div.find('#a-category').hide();
 		div.find('#nav-category').hide();

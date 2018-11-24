@@ -1,6 +1,6 @@
 <?php
 /**
- * sign/auto/
+ * account/autoSignIn/
  */
 require_once('../../api.php');
 

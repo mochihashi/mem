@@ -31,6 +31,13 @@ export default class {
 		window.app.cookies.set('lang', lang);
 	}
 	
+	getText(key) {
+		let text;
+		if(this.texts[this.lang]) text = this.texts[this.lang][key];
+		if(!text) text = key;
+		return text;
+	}
+	
 	render(selector = '#select-lang') {
 		let options = '';
 		for(let k in this.langNames) {
