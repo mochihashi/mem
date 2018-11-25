@@ -3,10 +3,11 @@ import * as container from 'html/Container';
 
 export default function() {
 	let div = $('#main-container');
+	let userId = toInt(div.find('[name="user_id"]').val());
 	let userName = div.find('.user').text();
 	let userDir = div.find('.user').attr('href');
 
-	div = container.renderMain(`
+	div = container.renderMain(escapeTemplate`
 <div class="page-header">
 	<h1 class="page-title">
 		<div class="d-flex align-items-center pt-3">
@@ -20,12 +21,12 @@ export default function() {
 <div class="row" id="row-tables"></div>
 	`);
 	
-	$.ajax({ url: userDir + 'index.json', type: "GET", dataType: "json", timeout: 10000
-	}).done(function(data, textStatus, jqXHR) {
+	window.app.readJson(userDir, function(data){
 		div.find('#a-user').text(data.name);
 		let links = '';
 		for(let i in data.categories) {
-			links += `
+			if(data.categories[i].parent_id > 0) continue;
+			links += escapeTemplate`
 <div class="col-md-6 col-lg-4 col-xl-3">
 	<div class="card">
 		<div class="card-header">
@@ -36,14 +37,15 @@ export default function() {
 			`;
 		}
 		for(let i in data.tables) {
-			links += `
+			if(data.tables[i].private && userId != window.app.account.id) continue;
+			links += escapeTemplate`
 <div class="col-md-6 col-lg-4 col-xl-3">
 	<div class="card">
 		<div class="card-header">
 			<h3 class="card-title"><a href="${data.tables[i].url}">${data.tables[i].name}</a></h3>
 		</div>
 		<div class="card-body d-flex flex-column">
-			<div class="text-muted">${data.tables[i].description || ''}</div>
+			<div class="text-muted">${data.tables[i].description}</div>
 		</div>
 	</div>
 </div>

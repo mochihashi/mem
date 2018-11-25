@@ -22,6 +22,17 @@ export default class {
 			this.error = 'length-short'; return false;
 		}
 		
+		if(!props.html) {
+			if(value.indexOf('<') >= 0) {
+				this.suffix = ': &lt;';
+				this.error = 'invalid-char'; return false;
+			}
+			if(value.indexOf('>') >= 0) {
+				this.suffix = ': &gt;';
+				this.error = 'invalid-char'; return false;
+			}
+		}
+		
 		return true;
 	}
 };

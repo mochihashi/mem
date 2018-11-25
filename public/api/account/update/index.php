@@ -48,6 +48,12 @@ try {
 	if($lang) $dao->addValue('lang', $lang);
 	$dao->update();
 	
+	if($name) {
+		require_once('common/DataFile.php');
+		$data = new DataFile();
+		$data->writeUserFile($userId, $name);
+	}
+	
 	respond(array('id' => $userId, 'name' => $name));
 	
 } catch(Exception $e) {

@@ -4,7 +4,7 @@ import InputForm from 'common/InputForm';
 import AccountControlHtml from 'html/account/AccountControlHtml';
 
 export default function() {
-	let div = container.renderOverlay('profile', `
+	let div = container.renderOverlay('profile', escapeTemplate`
 <div class="row">
 	<div class="col col-login mx-auto">
 		<form class="card" action="api/account/update/">

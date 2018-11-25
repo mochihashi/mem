@@ -18,15 +18,15 @@ export default function() {
 				<div class="dimmer"><div class="loader"></div><div class="dimmer-content">
 				<div class="form-group">
 					<label class="form-label"><span class="lang-name"></span></label>
-					<input type="text" class="form-control" name="name" placeholder="Name">
+					<input type="text" class="form-control" name="name" placeholder="Name" maxlength="50">
 				</div>
 				<div class="form-group">
 					<label class="form-label"><span class="lang-email-address"></span></label>
-					<input type="email" class="form-control" name="email" placeholder="Email">
+					<input type="email" class="form-control" name="email" placeholder="Email" maxlength="100">
 				</div>
 				<div class="form-group">
 					<label class="form-label"><span class="lang-password"></span></label>
-					<input type="password" class="form-control" name="password" placeholder="Password">
+					<input type="password" class="form-control" name="password" placeholder="Password" maxlength="50">
 				</div>
 				<div class="form-footer">
 					<input type="hidden" name="lang" value="${window.app.lang.lang}"/>

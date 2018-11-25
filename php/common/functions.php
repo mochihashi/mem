@@ -22,3 +22,22 @@ function joinPath() {
 	}
 	return implode('/', $arr);
 }
+
+function rows2map(&$list, $keyCol='id') {
+	$map = array();
+	if($list) {
+		foreach($list as $row) {
+			$key = @$row[$keyCol];
+			$map[$key] = $row;
+		}
+	}
+	return $map;
+}
+
+function deleteDir($dir) {
+	if(is_dir($dir)) {
+		array_map('deleteDir',   glob($dir.'/*', GLOB_ONLYDIR));
+		array_map('unlink', glob($dir.'/*'));
+		rmdir($dir);
+	}
+}

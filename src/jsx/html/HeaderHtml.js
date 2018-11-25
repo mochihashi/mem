@@ -24,13 +24,11 @@ export default function() {
 `);
 	div.find('[name="btn-create"]').click(TableEditHtml);
 	SignOutHtml({init: true});
-	if(window.app.cookies.get('auth')) {
-		$.ajax({
-			url: window.app.adjustUrl('api/account/autoSignIn/'),
-			type: "POST",
-			dataType: "json",
-			timeout: 10000
-		}).done(function(data, textStatus, jqXHR) {
+	let cookies = window.app.cookies;
+	if(cookies.get('account.id') && cookies.get('account.name') && cookies.get('account.dir')) {
+		AccountControlHtml();
+	} else if(cookies.get('auth')) {
+		window.app.readJson('api/account/autoSignIn/', function(data){
 			if(data.error) {
 				window.app.cookies.delete('auth');
 			} else {

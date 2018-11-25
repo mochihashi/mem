@@ -24,14 +24,20 @@ class DataFile {
 	public function getFilePath($dir) { return joinPath($this->_fileRoot, $dir); }
 	public function getWebPath($dir) { return joinPath($this->_webRoot, $dir); }
 	
-	public function getUserLinkHtml() { return $this->_userLinkHtml; }
-	public function getCategoryLinkHtml() { return $this->_categoryLinkHtml; }
-	
 	public function writeFile($path, $text) {
 		$path = $this->getFilePath($path);
 		$dir = dirname($path);
 		if(!is_dir($dir)) mkdir($dir, 0777, true);
 		file_put_contents($path, $text);
+	}
+	
+	public function deleteFile($path) {
+		$path = $this->getFilePath($path);
+		if(is_dir($path)) {
+			deleteDir($path);
+		} else if(is_file($path)) {
+			unlink($path);
+		}
 	}
 	
 	public function writeJson($dir, &$map) {
@@ -46,6 +52,7 @@ class DataFile {
 	public function getLinkHtml(&$list) {
 		$arr = array();
 		foreach($list as $row) {
+			if(@$row['private']) continue;
 			$url = @$row['url'];
 			$name = @$row['name'];
 			$description = @$row['description'];
@@ -62,33 +69,44 @@ class DataFile {
 		global $db;
 		$userInfo = array('id'=>$userId, 'name'=>$userName);
 		$dao = new Dao($db, 'category');
-		$categories = $dao->addWhere('user_id', $userId)->addOrderAsc('id')->addSelect('id')->addSelect('name')->select();
+		$categories = $dao->addWhere('user_id', $userId)->addOrderDesc('id')
+		->addSelect('id')->addSelect('name')->addSelect('parent_id')->select();
 		for($i = 0, $c = count($categories); $i < $c; $i++) {
 			$categories[$i]['url'] = $this->getWebPath($this->getCategoryDir($userId, $categories[$i]['id']));
 		}
-		$userInfo['categories'] = $categories;
+		$userInfo['categories'] = rows2map($categories, 'id');
 		
 		$dao = new Dao($db, 'word_table');
 		$tables = $dao->addWhere('user_id', $userId)->addWhere('category_id', 0)->addWhere('private', 0)
 		->addOrderDesc('id')
-		->addSelect('id')->addSelect('name')->addSelect('description')->select();
+		->addSelect('id')->addSelect('name')->addSelect('description')->addSelect('private')->select();
 		for($i = 0, $c = count($tables); $i < $c; $i++) {
 			$tables[$i]['url'] = $this->getWebPath($this->getTableDir($userId, $tables[$i]['id']));
 		}
-		$userInfo['tables'] = $tables;
+		$userInfo['tables'] = rows2map($tables, 'id');
 		
 		$userDir = $this->getUserDir($userId);
 		$this->writeJson($userDir, $userInfo);
 		
-		$this->_userLinkHtml = '
-	<input type="hidden" name="user_id" value="' . $userId . '" />
-	<a class="user" href="' . $this->getWebPath($userDir) . '">' . $userName . '</a><br/>';
-		
 		$html = $this->getPageTypeHtml('user')
-		. $this->_userLinkHtml
+		. $this->getUserLinkHtml($userId, $userName)
 		. $this->getLinkHtml($categories)
 		. $this->getLinkHtml($tables);
 		$this->writeHtml($userDir, $html, $userInfo['name']);
+	}
+	
+	public function getUserLinkHtml($userId, $userName='') {
+		if(!$this->_userLinkHtml) {
+			if(!$userName) {
+				$dao = new Dao($db, 'user');
+				$user = $dao->addWhere('id', $userId)->selectOne();
+				$userName = $user['name'];
+			}
+			$this->_userLinkHtml = '
+<input type="hidden" name="user_id" value="' . $userId . '" />
+<a class="user" href="' . $this->getWebPath($this->getUserDir($userId)) . '">' . $userName . '</a><br/>';
+		}
+		return $this->_userLinkHtml;
 	}
 	
 	/**
@@ -104,20 +122,39 @@ class DataFile {
 		for($i = 0, $c = count($tables); $i < $c; $i++) {
 			$tables[$i]['url'] = $this->getWebPath($this->getTableDir($userId, $tables[$i]['id']));
 		}
-		$categoryInfo['tables'] = $tables;
+		$categoryInfo['tables'] = rows2map($tables, 'id');
+		
+		$dao = new Dao($db, 'category');
+		$categories = $dao->addWhere('user_id', $userId)->addWhere('parent_id', $categoryId)->addOrderDesc('id')
+		->addSelect('id')->addSelect('name')->addSelect('parent_id')->select();
+		for($i = 0, $c = count($categories); $i < $c; $i++) {
+			$categories[$i]['url'] = $this->getWebPath($this->getCategoryDir($userId, $categories[$i]['id']));
+		}
+		$categoryInfo['categories'] = rows2map($categories, 'id');
 		
 		$categoryDir = $this->getCategoryDir($userId, $categoryId);
 		$this->writeJson($categoryDir, $categoryInfo);
 	
-		$this->_categoryLinkHtml = '
-<input type="hidden" name="category_id" value="' . $categoryId . '" />
-<a class="category" href="' . $this->getWebPath($categoryDir) . '">' . $categoryName . '</a><br/>';
-
 		$html = $this->getPageTypeHtml('category')
-		. $this->_userLinkHtml
-		. $this->_categoryLinkHtml
-		. $this->getLinkHtml($tables);
+		. $this->getUserLinkHtml($userId)
+		. $this->getCategoryLinkHtml($userId, $categoryId, $categoryName)
+		. $this->getLinkHtml($tables)
+		. $this->getLinkHtml($categories);
 		$this->writeHtml($categoryDir, $html, $categoryName);
+	}
+	
+	public function getCategoryLinkHtml($userId, $categoryId, $categoryName='') {
+		if(!$this->_categoryLinkHtml) {
+			if(!$categoryName) {
+				$dao = new Dao($db, 'category');
+				$category = $dao->addWhere('id', $categoryId)->selectOne();
+				$categoryName = $category['name'];
+			}
+			$this->_categoryLinkHtml = '
+<input type="hidden" name="category_id" value="' . $categoryId . '" />
+<a class="category" href="' . $this->getWebPath($this->getCategoryDir($userId, $categoryId)) . '">' . $categoryName . '</a><br/>';
+		}
+		return $this->_categoryLinkHtml;
 	}
 	
 	/**

@@ -28,6 +28,11 @@ class Validator {
 			return array('error' => 'length-short', 'prefix' => $minLength);
 		}
 		
+		if(!mapGet($props, 'html')) {
+			if(strpos($value, '<') !== false) return array('error' => 'invalid-char', 'suffix' => ': &lt;');
+			if(strpos($value, '>') !== false) return array('error' => 'invalid-char', 'suffix' => ': &gt;');
+		}
+		
 		return null;
 	}
 	

@@ -1,5 +1,7 @@
 <?php
 class Password {
+	const PREFIX = 'SwZ3A2hk';
+	
 	public static function hashPassword($password) {
 		return password_hash($password, PASSWORD_DEFAULT);
 	}
@@ -14,7 +16,7 @@ class Password {
 		$time = time();
 		$id = $user['id'];
 		$hash = self::shortHash($user['password_hash']);
-		$key = "$time\t$id\t$hash";
+		$key = "$time\t$id\t$hash\t" . self::PREFIX;
 		return bin2hex($blowfish->encrypt($key));
 	}
 	
@@ -31,7 +33,9 @@ class Password {
 		$blowfish = new Crypt_Blowfish($secretKey);
 		$key = rtrim($blowfish->decrypt(pack("H*", $key)));
 		$arr = explode("\t", $key);
-		if(count($arr) < 3) return null;
+		if(count($arr) < 4) return null;
+		$prefix = $arr[3];
+		if($prefix != self::PREFIX) return null;
 		$time = intval($arr[0]);
 		$id = intval($arr[1]);
 		$hash = $arr[2];

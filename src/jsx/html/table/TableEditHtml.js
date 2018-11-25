@@ -14,38 +14,39 @@ Thank you	Gracias
 Sorry	Lo siento
 I don't know	No lo sé`;
 
-	let div = container.renderOverlay('edit', `
+	let div = container.renderOverlay('edit', escapeTemplate`
 <div class="row">
 	<div class="col-12">
 		<form class="card" action="api/table/save/">
-			<input type="hidden" name="table_id" value="${tableId || ''}" />
+			<input type="hidden" name="table_id" value="${tableId}" />
 			<div class="card-header">
 				<div class="form-group col-10 mb-0">
-				<input type="text" name="title" class="form-control" value="${title || ''}" placeholder="Title" />
+				<input type="text" name="title" class="form-control" value="${title}" placeholder="Title" maxlength="100" />
 				</div>
 				<div class="card-options">
 					<a href="javascript:void(0)" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
 				</div>
 			</div>
 			<div class="card-body">
+				<div class="dimmer"><div class="loader"></div><div class="dimmer-content">
 				<div class="btn-list">
 					<button name="btn-test" class="btn btn-primary btn-lg"><i class="fe fe-play mr-2"></i><span class="lang-start-test"></span></button>
 				</div>
 				<div class="form-group mt-2">
-					<textarea rows="9" name="words" class="form-control">${words}</textarea>
+					<textarea rows="9" name="words" class="form-control">${{raw:words}}</textarea>
 				</div>
 				<div class="row">
 					<div class="col-md-6">
 						<div class="form-group">
 							<label class="form-label"><span class="lang-description"></span></label>
-							<textarea name="description" rows="3" class="form-control">${description || ''}</textarea>
+							<textarea name="description" rows="3" class="form-control">${description}</textarea>
 						</div>
 					</div>
 					<div class="col-md-6 col-lg-3">
 						<div class="form-group">
 							<label class="form-label"><i class="fe fe-folder"></i> <span class="lang-category"></span></label>
 							<div class="input-group">
-								<input type="text" name="category" class="form-control" value="${category || ''}">
+								<input type="text" name="category" class="form-control" value="${category}" maxlength="100">
 							</div>
 						</div>
 					</div>
@@ -60,6 +61,7 @@ I don't know	No lo sé`;
 						</div>
 					</div>
 				</div>
+				</div></div>
 			</div><!-- .card-body -->
 			<div class="card-footer d-flex align-items-center">
 				<button type="submit" class="btn btn-primary"><i class="fe fe-save mr-2"></i><span class="lang-save"></span></button>
@@ -104,20 +106,21 @@ I don't know	No lo sé`;
 	});
 	
 	if(window.app.account && window.app.account.dir) {
-		$.ajax({ url: window.app.account.dir + 'index.json', type: "GET", dataType: "json", timeout: 10000
-		}).done(function(data, textStatus, jqXHR) {
-			if(data.categories && data.categories.length > 0) {
+		window.app.readJson(window.app.account.dir, function(data){
+			if(data.categories) {
 				let links = '';
 				for(let i in data.categories) {
 					let name = data.categories[i].name;
 					links += `<a class="dropdown-item" href="javascript:void(0);" onclick="$(this).parent().parent().parent().find('input').val('${name}');">${name}</a>`;
 				}
-				div.find('[name="category"]').parent().append(`
+				if(links) {
+					div.find('[name="category"]').parent().append(`
 <div class="input-group-append">
 	<button data-toggle="dropdown" type="button" class="btn btn-secondary dropdown-toggle"></button>
 	<div class="dropdown-menu dropdown-menu-right">${links}</div>
 </div>
-				`);
+					`);
+				}
 				
 			}
 		});

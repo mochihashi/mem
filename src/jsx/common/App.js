@@ -8,6 +8,7 @@ export default class {
 		this.rootPath = this.getRootPath(rootDirs);
 		this.args = this.getArgs();
 		this.data = {};
+		this.account = {};
 		this.includedScripts = {};
 		this.includedStyles = {};
 	}
@@ -35,10 +36,11 @@ export default class {
 			};
 		}
 		if(!window.escapeHtml) {
-			window.escapeHtml = function(str) {
+			window.escapeHtml = function(str, lf2br=false) {
 				if(!str) return '';
+				if(str instanceof Object && str.raw) return str.raw;
 				str = str.toString();
-				return str.replace(/[&'`"<>]/g, function(match) {
+				str = str.replace(/[&'`"<>]/g, function(match) {
 					return {
 						'&': '&amp;',
 						"'": '&#x27;',
@@ -48,8 +50,37 @@ export default class {
 						'>': '&gt;',
 					}[match]
 				});
+				if(lf2br) str = str.replace(/\n/g, '<br/>');
+				return str;
 			};
 		}
+		if(!window.escapeTemplate) {
+			window.escapeTemplate = function(strings, ...values) {
+				let arr = [];
+				for(let i = 0; i < strings.length; i++) {
+					if(strings[i]) arr.push(strings[i]);
+					if(i < values.length && values[i]) arr.push(escapeHtml(values[i], true));
+				}
+				return arr.join('');
+			}
+		}
+		if(!window.toInt) {
+			window.toInt = function(str, ifNull=0) {
+				if(!str) return ifNull;
+				let v = parseInt(str.toString());
+				return v ? v : ifNull;
+			}
+		}
+		jQuery.fn.extend({
+			setSelectOption: function(map, selectedId){
+				let html = '';
+				for(let i in map) {
+					html += `<option value="${i}" ${i == selectedId ? 'selected="selected"' : ''}>${map[i]}</option>`;
+				}
+				jQuery(this).html(html);
+				return this;
+			}
+		});
 	}
 	
 	adjustUrl(url) {
@@ -110,5 +141,42 @@ export default class {
 			}
 		}
 		return args;
+	}
+	
+	readJson(url, callback, params, inputForm) {
+		if(inputForm && !inputForm.startProcess()) return;
+		url = this.adjustUrl(url);
+		if(url.indexOf('/api/') < 0 && url.endsWith('/')) url = url + 'index.json';
+		let props = {};
+		if(params) {
+			props.type = "POST";
+			props.data = params;
+		} else {
+			url += (url.indexOf('?') < 0) ? '?' : '&';
+			url += '.cb=' + new Date().getTime();
+			props.type = "GET";
+		}
+		props.url = url;
+		props.dataType = "text";
+		props.timeout = 10000;
+		$.ajax(props).done(function(text, textStatus, jqXHR) {
+			try {
+				let data = JSON.parse(text);
+				if(inputForm) inputForm.setMessages(data.responseMessages);
+				if(!(inputForm && data.error)) {
+					if(callback) callback(data);
+				}
+			} catch(e) {
+				console.log(e);
+				console.log(text);
+			}
+		}).fail(function(jqXHR, textStatus, errorThrown) {
+			if(inputForm) inputForm.setMessage({error: 'error', suffix: ': ' + jqXHR.status + ' ' + textStatus});
+			console.log(url + ': ' + jqXHR.status + ' ' + textStatus);
+			console.log(errorThrown);
+		}).always(function() {
+			if(inputForm) inputForm.endProcess();
+		});
+		
 	}
 };

@@ -9,7 +9,7 @@ export default function({title, list}) {
 	test.col2 = 1;
 	test.isRandom = true;
 	
-	let div = container.renderOverlay('test', `
+	let div = container.renderOverlay('test', escapeTemplate`
 <div class="row">
 	<div class="col-12">
 		<div class="card test">

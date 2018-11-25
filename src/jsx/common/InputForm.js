@@ -34,37 +34,18 @@ export default class {
 			
 			if(confirmMessage && !confirm(window.app.lang.getText(confirmMessage))) return;
 			
-			if(!me.startProcess(form)) return;
-			$.ajax({
-				url: window.app.adjustUrl(form.attr('action')),
-				type: "POST",
-				data: form.serialize(),
-				dataType: "text",
-				timeout: 10000
-			}).done(function(text, textStatus, jqXHR) {
-				try {
-					let data = JSON.parse(text);
-					if(data.responseMessages) {
-						me.setMessage();
-						for(let i = data.responseMessages.length - 1; i >= 0; i--) {
-							me.addMessage(data.responseMessages[i], i);
-						}
-					}
-					if(!data.error && callback) callback(data);
-				} catch(e) {
-					console.log(e);
-					console.log(text);
-				}
-			}).fail(function(jqXHR, textStatus, errorThrown) {
-				let error = jqXHR.status + ' ' + textStatus;
-				me.setMessage({error: 'error', suffix: ': ' + jqXHR.status + ' ' + textStatus});
-				console.log(errorThrown);
-			}).always(function() {
-				me.endProcess(form);
-			});
+			window.app.readJson(form.attr('action'), callback, form.serialize(), me);
 		});
 	}
 	
+	setMessages(messages) {
+		this.setMessage();
+		if(messages) {
+			for(let i = messages.length - 1; i >= 0; i--) {
+				this.addMessage(messages[i], i);
+			}
+		}
+	}
 	setMessage(message) {
 		this.form.parent().find('.alert').remove();
 		if(message) this.addMessage(message);
@@ -94,16 +75,16 @@ export default class {
 		`);
 	}
 	
-	startProcess(form) {
+	startProcess() {
 		if(this.isProcessing) return false;
 		this.isProcessing = true;
-		form.find('.dimmer').addClass('active');
+		this.form.find('.dimmer').addClass('active');
 		return true;
 	}
 	
-	endProcess(form) {
+	endProcess() {
 		this.isProcessing = false;
-		form.find('.dimmer').removeClass('active');
+		this.form.find('.dimmer').removeClass('active');
 	}
 	
 	val(object) {

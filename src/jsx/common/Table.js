@@ -7,6 +7,7 @@ export default class {
 	}
 	
 	parse(text, inputForm) {
+		if(!text) return null;
 		let arr = CSV.parse(text, {delimiter: '\t'});
 		if(arr.length < 3) {
 			if(inputForm) inputForm.setMessage({'field':'words', 'error':'row-short', 'prefix':3});

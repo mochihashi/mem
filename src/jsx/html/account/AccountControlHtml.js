@@ -2,14 +2,20 @@
 import * as container from 'html/Container';
 import SignOutHtml from 'html/account/SignOutHtml';
 import ProfileHtml from 'html/account/ProfileHtml';
+import AccountTableListHtml from 'html/account/AccountTableListHtml';
+import AccountCategoryListHtml from 'html/account/AccountCategoryListHtml';
 
 export default function(data) {
-	if(data.auth) window.app.cookies.set('auth', data.auth);
-	window.app.account = window.app.account || {};
-	if(data.id) window.app.account.id = data.id;
-	if(data.name) window.app.account.name = data.name;
-	if(data.dir) window.app.account.dir = data.dir;
-
+	if(data) {
+		if(data.auth) window.app.cookies.set('auth', data.auth, 30);
+		if(data.id) { window.app.account.id = data.id; window.app.cookies.set('account.id', data.id, 3); }
+		if(data.name) { window.app.account.name = data.name; window.app.cookies.set('account.name', data.name, 3); }
+		if(data.dir) { window.app.account.dir = data.dir; window.app.cookies.set('account.dir', data.dir, 3); }
+	} else {
+		window.app.account.id = toInt(window.app.cookies.get('account.id'));
+		window.app.account.name = window.app.cookies.get('account.name');
+		window.app.account.dir = window.app.cookies.get('account.dir');
+	}
 	let div = container.renderTo('#account-control', `
 <div class="dropdown" id="div-login-user">
 	<a href="javascript:void(0)" class="nav-link pr-0 leading-none" data-toggle="dropdown">
@@ -40,6 +46,8 @@ export default function(data) {
 </div>
 	`);
 	div.find('#btn-account-profile').click(ProfileHtml);
+	div.find('#btn-account-tables').click(AccountTableListHtml);
+	div.find('#btn-account-categories').click(AccountCategoryListHtml);
 	div.find('#btn-account-sign-out').click(SignOutHtml);
 }
 	

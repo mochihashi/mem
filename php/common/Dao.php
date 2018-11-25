@@ -124,8 +124,8 @@ class Dao {
 		$sql = 'UPDATE ' . $this->_table . ' SET';
 		$sets = array();
 		foreach($this->_values as $col => $value) {
-			$sets[] = "$col = :$col";
-			$this->_params[":$col"] = $value;
+			$sets[] = "$col = :update_$col";
+			$this->_params[":update_$col"] = $value;
 		}
 		$sql .= ' ' . implode(', ', $sets);
 		$sql .= $this->buildWhere();
@@ -204,7 +204,7 @@ class Dao {
 		if(count($this->_limits) == 0) return '';
 		$limit = $this->_limits['limit'];
 		$offset = $this->_limits['offset'];
-		if($offset) $offset .= ', ';
+		$offset = $offset ? ", $offset" : '';
 		return " LIMIT $offset$limit";
 	}
 }
