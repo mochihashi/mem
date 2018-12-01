@@ -90,7 +90,8 @@ export default function() {
 			let nav = `<h4><a href="${categoryDir}">${data.name}</a></h4>
 			<div class="list-group list-group-transparent mb-0">`;
 			for(let i in data.categories) {
-				nav += `<a href="${data.categories[i].url}" class="list-group-item list-group-item-action">
+				let active = (data.categories[i].id == categoryId ? ' active' : '');
+				nav += `<a href="${data.categories[i].url}" class="list-group-item list-group-item-action${active}">
 				${data.categories[i].name}</a>`;
 			}
 			for(let i in data.tables) {

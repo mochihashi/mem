@@ -62,6 +62,30 @@ class DataFile {
 		return implode("\n", $arr);
 	}
 	
+	public function setUrlToCategoryList(&$list, $userId = 0) {
+		$c = count($list);
+		foreach($list as $i => $row) {
+			$u = ($userId ? $userId : $row['user_id']);
+			$list[$i]['url'] = $this->getWebPath($this->getCategoryDir($u, $row['id']));
+		}
+	}
+	
+	public function setUrlToTableList(&$list, $userId = 0) {
+		$c = count($list);
+		foreach($list as $i => $row) {
+			$u = ($userId ? $userId : $row['user_id']);
+			$list[$i]['url'] = $this->getWebPath($this->getTableDir($u, $row['id']));
+		}
+	}
+	
+	public function setUserUrlToList(&$list) {
+		$c = count($list);
+		foreach($list as $i => $row) {
+			$u = $row['user_id'];
+			$list[$i]['user_url'] = $this->getWebPath($this->getUserDir($u));
+		}
+	}
+	
 	/**
 	 * write /u{id}/
 	 */
@@ -71,18 +95,14 @@ class DataFile {
 		$dao = new Dao($db, 'category');
 		$categories = $dao->addWhere('user_id', $userId)->addOrderDesc('id')
 		->addSelect('id')->addSelect('name')->addSelect('parent_id')->select();
-		for($i = 0, $c = count($categories); $i < $c; $i++) {
-			$categories[$i]['url'] = $this->getWebPath($this->getCategoryDir($userId, $categories[$i]['id']));
-		}
+		$this->setUrlToCategoryList($categories, $userId);
 		$userInfo['categories'] = rows2map($categories, 'id');
 		
 		$dao = new Dao($db, 'word_table');
 		$tables = $dao->addWhere('user_id', $userId)->addWhere('category_id', 0)->addWhere('private', 0)
 		->addOrderDesc('id')
 		->addSelect('id')->addSelect('name')->addSelect('description')->addSelect('private')->select();
-		for($i = 0, $c = count($tables); $i < $c; $i++) {
-			$tables[$i]['url'] = $this->getWebPath($this->getTableDir($userId, $tables[$i]['id']));
-		}
+		$this->setUrlToTableList($tables, $userId);
 		$userInfo['tables'] = rows2map($tables, 'id');
 		
 		$userDir = $this->getUserDir($userId);
@@ -119,17 +139,13 @@ class DataFile {
 		$tables = $dao->addWhere('user_id', $userId)->addWhere('category_id', $categoryId)->addWhere('private', 0)
 		->addOrderDesc('id')
 		->addSelect('id')->addSelect('name')->addSelect('description')->select();
-		for($i = 0, $c = count($tables); $i < $c; $i++) {
-			$tables[$i]['url'] = $this->getWebPath($this->getTableDir($userId, $tables[$i]['id']));
-		}
+		$this->setUrlToTableList($tables, $userId);
 		$categoryInfo['tables'] = rows2map($tables, 'id');
 		
 		$dao = new Dao($db, 'category');
 		$categories = $dao->addWhere('user_id', $userId)->addWhere('parent_id', $categoryId)->addOrderDesc('id')
 		->addSelect('id')->addSelect('name')->addSelect('parent_id')->select();
-		for($i = 0, $c = count($categories); $i < $c; $i++) {
-			$categories[$i]['url'] = $this->getWebPath($this->getCategoryDir($userId, $categories[$i]['id']));
-		}
+		$this->setUrlToCategoryList($categories, $userId);
 		$categoryInfo['categories'] = rows2map($categories, 'id');
 		
 		$categoryDir = $this->getCategoryDir($userId, $categoryId);

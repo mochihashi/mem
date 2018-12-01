@@ -3,13 +3,13 @@ import * as container from 'html/Container';
 import SignInHtml from 'html/account/SignInHtml';
 import SignUpHtml from 'html/account/SignUpHtml';
 
-export default function(message) {
+export default function(message, title='') {
 	let div = container.renderOverlay('message', `
 <div class="row">
 	<div class="col col-login mx-auto">
 		<div class="card">
 			<div class="card-header">
-				<h3 class="card-title"></h3>
+				<h3 class="card-title">${title ? '<span class="lang-msg-' + title + '"></span>' : ''}</h3>
 				<div class="card-options">
 					<a href="javascript:void(0)" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
 				</div>

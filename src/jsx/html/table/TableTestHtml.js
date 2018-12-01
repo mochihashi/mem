@@ -8,6 +8,7 @@ export default function({title, list}) {
 	test.col1 = 0;
 	test.col2 = 1;
 	test.isRandom = true;
+	test.isMute = (toInt(window.app.cookies.get('mute')) == 1);
 	
 	let div = container.renderOverlay('test', escapeTemplate`
 <div class="row">
@@ -120,8 +121,11 @@ export default function({title, list}) {
 	div.find('[name="test-before"]').click(()=>{ showBefore(); });
 	div.find('[name="test-next"]').click(()=>{ clickNext(); });
 	div.find('[name="test-random"]').click(()=>{ test.isRandom = $('[name="test-random"]').prop('checked') ? true : false; start(); });
-	div.find('[name="test-yesno"]').click(()=>{ test.isYesNo = $('[name="test-yesno"]').prop('checked') ? true : false; start(); });
-	div.find('[name="test-mute"]').click(()=>{ test.isMute = $('[name="test-mute"]').prop('checked') ? true : false; });
+	div.find('[name="test-yesno"]').click(()=>{ test.isYesNo = $('[name="test-yesno"]').prop('checked') ? true : false; showQuestion(); });
+	div.find('[name="test-mute"]').click(()=>{
+		test.isMute = $('[name="test-mute"]').prop('checked') ? true : false;
+		window.app.cookies.set('mute', test.isMute ? 1 : 0);
+	});
 	div.find('[name="test-search"]').change(()=>{ test.searchText = $('[name="test-search"]').val(); start(); });
 	
 	start();

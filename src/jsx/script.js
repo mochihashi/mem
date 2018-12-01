@@ -4,9 +4,10 @@ import Lang from 'common/Lang';
 import HeaderHtml from 'html/HeaderHtml';
 import FooterHtml from 'html/FooterHtml';
 import MessageHtml from 'html/MessageHtml';
-import TableHtml from 'html/table/TableHtml';
-import CategoryHtml from 'html/list/CategoryHtml';
+import TopHtml from 'html/list/TopHtml';
 import UserHtml from 'html/list/UserHtml';
+import CategoryHtml from 'html/list/CategoryHtml';
+import TableHtml from 'html/table/TableHtml';
 
 window.app = new App({rootDirs: '/public/'});
 
@@ -28,7 +29,12 @@ $(document).ready(function(){
 	window.app.lang.render('#select-lang');
 	if(window.app.args.msg) { MessageHtml(window.app.args.msg); }
 	let pageType = $('#main-container [name="page_type"]').val();
-	if(pageType == 'table') TableHtml(); 
-	else if(pageType == 'category') CategoryHtml(); 
-	else if(pageType == 'user') UserHtml(); 
+	if(pageType == 'top') TopHtml();
+	else if(pageType == 'table') TableHtml();
+	else if(pageType == 'category') CategoryHtml();
+	else if(pageType == 'user') UserHtml();
+	
+	if(location.hostname != '127.0.0.1') {
+		window.app.includeScript('/static/pixel/tracking.js');
+	}
 });

@@ -1,6 +1,7 @@
 'use strict';
 import * as container from 'html/Container';
 import SignUpHtml from 'html/account/SignUpHtml';
+import ForgotPasswordHtml from 'html/account/ForgotPasswordHtml';
 import AccountControlHtml from 'html/account/AccountControlHtml';
 import InputForm from 'common/InputForm';
 
@@ -24,7 +25,7 @@ export default function() {
 				<div class="form-group">
 					<label class="form-label">
 					<span class="lang-password"></span>
-					<a href="./forgot-password.html" class="float-right small"><span class="lang-msg-forgot-password"></span></a>
+					<a href="" class="float-right small" name="forgot-password"><span class="lang-msg-forgot-password"></span></a>
 					</label>
 					<input type="password" class="form-control" name="password" placeholder="Password">
 				</div>
@@ -42,6 +43,7 @@ export default function() {
 </div><!-- .row -->
 	`);
 	div.find('[name="btn-to-sign-up"]').click(SignUpHtml);
+	div.find('[name="forgot-password"]').click(()=>{ ForgotPasswordHtml(); return false; });
 	div.find('[name="email"]').focus();
 	new InputForm().assign({form: div.find('form'), fields: {
 		email: {required: true, type: 'email'},

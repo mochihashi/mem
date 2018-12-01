@@ -1,6 +1,7 @@
 'use strict';
 import * as container from 'html/Container';
 import SignInHtml from 'html/account/SignInHtml';
+import MessageHtml from 'html/MessageHtml';
 import InputForm from 'common/InputForm';
 
 export default function() {
@@ -48,25 +49,8 @@ export default function() {
 		name: {required: true, minLength: 3},
 		email: {required: true, type: 'email'},
 		password: {required: true, minLength: 8}
-	}, callback: renderRegistered});
-}
-
-function renderRegistered() {
-	container.renderOverlay('sign', `
-<div class="row">
-	<div class="col col-login mx-auto">
-		<div class="card">
-			<div class="card-header">
-				<h3 class="card-title"><span class="lang-msg-account-registered"></span></h3>
-				<div class="card-options">
-					<a href="javascript:void(0)" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
-				</div>
-			</div>
-			<div class="card-body p-6">
-				<div><span class="lang-msg-activation-email-sent"></span></div>
-			</div>
-		</div>
-	</div><!-- .col-login -->
-</div><!-- .row -->
-	`);
+	}, callback: function(data) {
+		container.closeOverlay('sign');
+		MessageHtml('activation-email-sent', 'account-registered');
+	}});
 }

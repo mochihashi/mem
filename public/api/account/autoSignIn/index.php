@@ -15,7 +15,7 @@ try {
 	require_once('common/Dao.php');
 	$dao = new Dao($db, 'user');
 	$user = $dao->addWhere('id', $id)->selectOne();
-	if(!Password::matchUser($auth, $user)) respondError($error);
+	if(!Password::matchUser($auth, $user)) respondError(array('error'=>'auth-expired'));
 	
 	// return auth
 	respond(Auth::createResponseAuth($user));
