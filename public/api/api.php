@@ -5,11 +5,11 @@
  */
 $pathes = array(get_include_path());
 $p = strpos(__FILE__, '/api/');
-if($p >= 0) {
+if($p !== false) {
 	$pathes[] = substr(__FILE__, 0, $p) . '/';
 }
 $p = strpos(__FILE__, '/public/');
-if($p >= 0) {
+if($p !== false) {
 	$pathes[] = substr(__FILE__, 0, $p) . '/php/';
 } else {
 	$pathes[] = '/var/opt/mem/php/';

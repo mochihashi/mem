@@ -35,6 +35,6 @@ $(document).ready(function(){
 	else if(pageType == 'user') UserHtml();
 	
 	if(location.hostname != '127.0.0.1') {
-		window.app.includeScript('/static/pixel/tracking.js');
+		window.app.includeScript('https://mochihashi.github.io/static/pixel/tracking.js');
 	}
 });

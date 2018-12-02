@@ -21,7 +21,7 @@ try {
 	$dao = new Dao($db, 'user');
 	$user = $dao->addWhere('email', $email)->selectOne();
 	$hash = mapGet($user, 'password_hash');
-	if(!$hash || Password::matchPassword($password, $hash)) {
+	if(!$hash || !Password::matchPassword($password, $hash)) {
 		respondError(array('field'=>'email', 'error'=>'auth-failed'));
 	}
 	

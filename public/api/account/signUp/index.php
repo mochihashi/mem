@@ -45,7 +45,8 @@ try {
 	$replaces = array('{#APPNAME}' => App::NAME, '{#URL}' => $url, '{#NAME}' => $name);
 	$title = strtr(Lang::ACTIVATE_MAIL_TITLE, $replaces);
 	$body = strtr(Lang::ACTIVATE_MAIL_BODY, $replaces);
-	mb_send_mail($email, $title, $body);
+	$header = "From: " . App::MAIL_FROM . "\r\n";
+	mb_send_mail($email, $title, $body, $header);
 	
 	respond(array('id' => $id));
 	

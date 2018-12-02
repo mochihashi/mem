@@ -83,6 +83,7 @@ function getSql(&$map) {
 		$arr[] = $col['type'];
 		if(@$col['not-null']) $arr[] = 'NOT NULL';
 		if(strlen(@$col['default'])>0) $arr[] = 'DEFAULT ' . $col['default'];
+		else if($col['type'] == 'timestamp') $arr[] = 'DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP';
 		if(@$col['extra']) $arr[] = $col['extra'];
 		
 		$lines[] = implode(' ', $arr);

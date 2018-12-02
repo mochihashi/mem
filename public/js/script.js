@@ -350,4 +350,4 @@
 <div class="col-md-6 col-lg-4">
 	${N(s.categories[t],n)}
 </div>
-			`);(a+=A({list:s.tables,userId:e}))||(a='<span class="lang-msg-no-data"></span>'),t.find("#row-tables").html(a)})}(),"127.0.0.1"!=location.hostname&&window.app.includeScript("/static/pixel/tracking.js")})}]);
+			`);(a+=A({list:s.tables,userId:e}))||(a='<span class="lang-msg-no-data"></span>'),t.find("#row-tables").html(a)})}(),"127.0.0.1"!=location.hostname&&window.app.includeScript("https://mochihashi.github.io/static/pixel/tracking.js")})}]);
