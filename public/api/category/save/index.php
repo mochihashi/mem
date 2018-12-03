@@ -32,12 +32,12 @@ try {
 	
 	// insert
 	$name = mapGet($form, 'name');
-	$parent_id = mapGet($form, 'parent_id');
+	$parentId = mapGet($form, 'parent_id');
 	
 	$dao = new Dao($db, 'category');
 	$dao->addWhere('user_id', $userId);
 	$dao->addValue('name', $name);
-	$dao->addValue('parent_id', $parent_id);
+	$dao->addValue('parent_id', $parentId);
 	if($id) {
 		$dao->addWhere('id', $id);
 		$dao->update();
@@ -53,6 +53,12 @@ try {
 	$data = new DataFile();
 	$data->writeUserFile($userId, $userName);
 	$data->writeCategoryFile($userId, $id, $name);
+	if($parentId > 0) {
+		$dao = new Dao($db, 'category');
+		$dao->addWhere('id', $parentId);
+		$parent = $dao->selectOne();
+		$data->writeCategoryFile($userId, $parentId, $parent['name']);
+	}
 	
 	respond(array('id' => $id));
 	

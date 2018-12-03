@@ -30,15 +30,17 @@ export default class {
 						let p = val.lastIndexOf('.');
 						if(p > 0) {
 							let ext = val.slice(p + 1);
-							if(IMG_EXTS[ext]) {
+							if(this.IMG_EXTS[ext]) {
 								val = '<img src="' + val + '" />';
-							} else if(AUDIO_EXTS[ext]) {
+							} else if(this.AUDIO_EXTS[ext]) {
 								val = '<audio src="' + val + '" controls onclick="event.stopPropagation();">' + val + '</audio>';
 							}
 						}
 					}
-					arr[r][c] = val;
+				} else {
+					val = '';
 				}
+				arr[r][c] = val;
 			}
 		}
 		return arr;

@@ -8,7 +8,7 @@ export default function() {
 	let div = container.renderTo('.header', `
 <div class="container">
 	<div class="d-flex">
-		<a class="header-brand" href="./">
+		<a class="header-brand" href="${window.app.rootPath}">
 		<i class="fe fe-paperclip"></i>
 		memorize words
 		</a>

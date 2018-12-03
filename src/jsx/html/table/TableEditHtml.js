@@ -97,12 +97,12 @@ I don't know	No lo sé`;
 	}, confirmMessage: 'save?'});
 	
 	div.find('[name="btn-test"]').click((event)=>{
+		event.preventDefault(); event.stopPropagation();
 		let title = div.find('[name="title"]').val();
 		let words = div.find('[name="words"]').val();
 		let list = new Table().parse(words, inputForm);
-		if(!list) return false;
+		if(!list) return;
 		TableTestHtml({title: title, list: list});
-		return false;
 	});
 	
 	if(window.app.account && window.app.account.dir) {

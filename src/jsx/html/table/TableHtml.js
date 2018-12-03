@@ -135,7 +135,7 @@ function getTableHtml(list) {
 		let td = (r == 0 ? 'th' : 'td');
 		table += '<tr>';
 		for(let c = 0; c < row.length; c++) {
-			table += `<${td}>${escapeHtml(row[c])}</${td}>`;
+			table += `<${td}>${row[c]}</${td}>`;
 		}
 		table += '</tr>';
 		if(r == 0) table += '</thead>';

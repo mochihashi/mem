@@ -2,10 +2,14 @@
 /**
  * create_top.php dir=/var/www/html/data/top/
  */
+chdir(dirname(__FILE__));
 require_once('../job.php');
 require_once('config/db.php');
 require_once('common/Dao.php');
 require_once('common/DataFile.php');
+
+$dir = $form['dir'];
+
 $data = new DataFile();
 $map = array();
 
@@ -29,4 +33,4 @@ $data->setUrlToTableList($tables);
 $data->setUserUrlToList($tables);
 $map['tables'] = rows2map($tables, 'id');
 
-$data->writeJson($form['dir'], $map);
+$data->writeJson($dir, $map);

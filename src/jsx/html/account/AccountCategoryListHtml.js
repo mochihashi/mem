@@ -90,7 +90,7 @@ function setTable(div) {
 		div.find('table.table tbody [data-control="edit"]').click(function(event){
 			let id = parseInt($(this).attr('data-id'));
 			let category = data.categories[id];
-			AccountCategoryEditHtml({id: id, name: category.name, parent_id: category.parent_id,
+			AccountCategoryEditHtml({id: id, name: category.name, parentId: category.parent_id,
 			callback: function(){ setTable(div); }});
 			return false;
 		});
