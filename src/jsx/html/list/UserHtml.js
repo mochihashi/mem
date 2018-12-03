@@ -35,7 +35,7 @@ export default function() {
 		}
 		for(let i in data.categories) {
 			if(data.categories[i].parent_id > 0) continue;
-			links += escapeTemplate`
+			links += `
 <div class="col-md-6 col-lg-4">
 	${nestedCard(data.categories[i], parentMap)}
 </div>
@@ -52,7 +52,7 @@ function nestedCard(category, parentMap) {
 	let children = parentMap[category.id];
 	if(children) {
 		for(let c in children) {
-			childrenHtml += nestedCard(c, parentMap);
+			childrenHtml += nestedCard(children[c], parentMap);
 		}
 		childrenHtml = `<div class="card-body d-flex flex-column">${childrenHtml}</div>`;
 	}

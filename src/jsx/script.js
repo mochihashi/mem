@@ -21,7 +21,7 @@ window.app
 ;
 
 window.app.cookies = new Cookies();
-window.app.lang = new Lang({langNames: { en: 'English', ja: '日本語'}, cssPath: 'css/lang/lang.', jsPath: 'js/lang/lang.' });
+window.app.lang = new Lang({langNames: { en: 'English', zh: '中文', ja: '日本語', ko: '한국어'}, cssPath: 'css/lang/lang.', jsPath: 'js/lang/lang.' });
 
 $(document).ready(function(){
 	HeaderHtml();
