@@ -95,7 +95,7 @@ function setTable(div, accountData, tables, categoryId) {
 	
 	div.find('table.table tbody').html(html);
 	div.find('table.table tbody [data-control="delete"]').click(function(event){
-		if(!confirm(window.app.lang.getText('delete?'))) return;
+		if(!confirm(window.app.lang.getText('delete?'))) return false;
 		let tableId = $(this).attr('data-id');
 		window.app.readJson('api/table/delete/', function(data){
 			changeCategory(div, accountData, categoryId);

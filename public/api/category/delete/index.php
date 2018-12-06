@@ -42,7 +42,7 @@ try {
 	// delete files
 	require_once('common/DataFile.php');
 	$data = new DataFile();
-	$categoryDir = $data->geCategoryDir($userId, $categoryId);
+	$categoryDir = $data->getCategoryDir($userId, $categoryId);
 	$data->deleteFile($categoryDir);
 	
 	$data->writeUserFile($userId, $user['name']);

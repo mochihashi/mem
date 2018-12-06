@@ -179,4 +179,21 @@ export default class {
 		});
 		
 	}
+	
+	goto({url, cb=false, post=false}) {
+		if(!post) {
+			let _url = url;
+			if(cb) {
+				_url += (url.indexOf('?') < 0 ? '?' : '&');
+				_url += '_cb=' + new Date().getTime();
+			}
+			location.href = _url;
+		} else {
+			let html = '';
+			if(cb) html = `<input type="hidden" name="_cb" value="${new Date().getTime()}" />`;
+			html = `<form method="post" action="${url}" id="goto" style="display:none;">${html}</form>`;
+			$("body").append(html);
+			$("#goto").submit();
+		}
+	}
 };

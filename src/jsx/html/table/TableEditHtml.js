@@ -93,7 +93,7 @@ I don't know	No lo sé`;
 		}
 		return true;
 	}, callback: function(data) {
-		if(data.table_path) location.href = data.table_path;
+		if(data.table_path) window.app.goto({url: data.table_path, cb: true, post: true});
 	}, confirmMessage: 'save?'});
 	
 	div.find('[name="btn-test"]').click((event)=>{

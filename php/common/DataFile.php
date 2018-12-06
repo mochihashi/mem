@@ -116,6 +116,7 @@ class DataFile {
 	}
 	
 	public function getUserLinkHtml($userId, $userName='') {
+		global $db;
 		if(!$this->_userLinkHtml) {
 			if(!$userName) {
 				$dao = new Dao($db, 'user');
@@ -160,6 +161,7 @@ class DataFile {
 	}
 	
 	public function getCategoryLinkHtml($userId, $categoryId, $categoryName='') {
+		global $db;
 		if(!$this->_categoryLinkHtml) {
 			if(!$categoryName) {
 				$dao = new Dao($db, 'category');

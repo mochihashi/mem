@@ -145,6 +145,7 @@ function changeColumn1(col) {
 	let col0 = test.col1;
 	test.col1 = col;
 	if(test.col2 == test.col1) test.col2 = col0;
+	setColumnOption('#test-select-column1', test.col1, -1);
 	setColumnOption('#test-select-column2', test.col2, test.col1);
 }
 

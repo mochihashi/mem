@@ -57,6 +57,7 @@ try {
 		$dao = new Dao($db, 'category');
 		$dao->addWhere('id', $parentId);
 		$parent = $dao->selectOne();
+		$data = new DataFile();
 		$data->writeCategoryFile($userId, $parentId, $parent['name']);
 	}
 	
