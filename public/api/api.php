@@ -41,10 +41,21 @@ function respondError($error) {
 	respond(array("error" => 1, "responseMessages" => array($error)));
 }
 function respondException(&$e) {
-	$message = $e->getMessage() . " @" . $e->getFile() . "#" . $e->getLine();
+	global $form;
+	$message = $e->getMessage(); // . " @" . $e->getFile() . "#" . $e->getLine();
 	$error = array('error' => 'error', 'suffix' => ': ' . $message);
+	if(App::ERROR_MAIL_TO) {
+		$body = $e->getMessage() . " @" . $e->getFile() . "#" . $e->getLine();
+		$body .= "\nREQUEST_URI: " . $_SERVER['REQUEST_URI'];
+		$body .= "\nArgs:"
+		foreach($form as $k => $v) { $body .= "\n  $k = $v"; }
+		mb_send_mail(App::ERROR_MAIL_TO, "Error: " . App::NAME, $body, "From: " . App::MAIL_FROM);
+	}
 	respond(array("error" => 1, "responseMessages" => array($error)));
 }
+set_error_handler(function ($errno, $errstr, $errfile, $errline ) {
+    throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+});
 function redirect($url) {
 	header("Location: $url");
 	exit();
