@@ -2,6 +2,7 @@
 import * as container from 'html/Container';
 
 export default function({title, list}) {
+	let isFirst = !window.test;
 	window.test = {};
 	test.title = list[0];
 	test.list = list.slice(1);
@@ -80,10 +81,10 @@ export default function({title, list}) {
 </div>
 <div class="row test-row-yesno">
 	<div class="col-6 mt-2">
-		<button class="btn btn-outline-danger btn-lg btn-block test-no"><span class="lang-not-know"></span></button>
+		<button class="btn btn-outline-primary btn-lg btn-block test-yes"><span class="lang-know"></span><i class="fe fe-chevron-down mr-2"></i></button>
 	</div>
 	<div class="col-6 mt-2">
-		<button class="btn btn-outline-primary btn-lg btn-block test-yes"><span class="lang-know"></span></button>
+		<button class="btn btn-outline-danger btn-lg btn-block test-no"><span class="lang-not-know"></span><i class="fe fe-chevron-right mr-2"></i></button>
 	</div>
 </div>
 <div class="row test-row-answer mt-5">
@@ -91,7 +92,7 @@ export default function({title, list}) {
 		<table class="table table-borderless">
 		</table>
 		<div class="btn-list mt-5 text-right">
-			<button name="test-next" class="btn btn-outline-primary"><i class="fe fe-chevron-right mr-2"></i><span class="lang-next"></span></button>
+			<button name="test-next" class="btn btn-outline-primary btn-lg btn-block"><i class="fe fe-chevron-right mr-2"></i><span class="lang-next"></span></button>
 		</div>
 	</span>
 </div>
@@ -121,12 +122,26 @@ export default function({title, list}) {
 	div.find('[name="test-before"]').click(()=>{ showBefore(); });
 	div.find('[name="test-next"]').click(()=>{ clickNext(); });
 	div.find('[name="test-random"]').click(()=>{ test.isRandom = $('[name="test-random"]').prop('checked') ? true : false; start(); });
-	div.find('[name="test-yesno"]').click(()=>{ test.isYesNo = $('[name="test-yesno"]').prop('checked') ? true : false; showQuestion(); });
+	div.find('[name="test-yesno"]').click(()=>{ test.isYesNo = $('[name="test-yesno"]').prop('checked') ? true : false; start(); });
 	div.find('[name="test-mute"]').click(()=>{
 		test.isMute = $('[name="test-mute"]').prop('checked') ? true : false;
 		window.app.cookies.set('mute', test.isMute ? 1 : 0);
 	});
 	div.find('[name="test-search"]').change(()=>{ test.searchText = $('[name="test-search"]').val(); start(); });
+	div.find('.test-row-yesno button.test-yes').click(clickDown);
+	div.find('.test-row-yesno button.test-no').click(clickNext);
+	
+	if(!isFirst) $(document).off('keydown', '.test');
+	$(document).on('keydown', '.test', function(e) {
+		if(!test.test) return;
+		if(e.keyCode == 37) { // left
+			showBefore();
+		} else if(e.keyCode == 39) { // right
+			showNext();
+		} else if(e.keyCode == 40) { // down
+			showDown();
+		}
+	});
 	
 	start();
 }
@@ -216,8 +231,6 @@ function showQuestion(add, push) {
 		if(test.isYesNo) {
 			// no answer option
 			$('.test-row-yesno').show(); $('.test-row-options').hide();
-			$('.test-row-yesno button.test-yes').click(clickDown);
-			$('.test-row-yesno button.test-no').click(clickNext);
 		} else {
 			// show answer options
 			$('.test-row-yesno').hide(); $('.test-row-options').show();

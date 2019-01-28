@@ -8,7 +8,8 @@ export default class {
 	
 	parse(text, inputForm) {
 		if(!text) return null;
-		let arr = CSV.parse(text, {delimiter: '\t'});
+		let isCsv = (text.indexOf('\t') < 0 && text.indexOf(',') >= 0);
+		let arr = CSV.parse(text, {delimiter: isCsv ? ',' : '\t'});
 		if(arr.length < 3) {
 			if(inputForm) inputForm.setMessage({'field':'words', 'error':'row-short', 'prefix':3});
 			return null;

@@ -77,6 +77,15 @@ I don't know	No lo sé`;
 	
 	let obj = div.find('[name="words"]');
 	obj[0].setSelectionRange(0, obj.text().length); obj.focus();
+	obj.keydown(function(e){
+		if(e.keyCode == 9) { // tab
+			e.preventDefault();
+			var p1 = this.selectionStart, p2 = this.selectionEnd;
+			this.value = this.value.substr(0, p1) + "\t" + this.value.substr(p2);
+			this.setSelectionRange(p1 + 1, p1 + 1);
+		}
+	});
+	
 	if(!tableId) div.find('[name="control-overwrite"]').hide();
 	
 	let inputForm = new InputForm();
