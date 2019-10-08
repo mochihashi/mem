@@ -21,7 +21,7 @@ export default class {
 		for(let r = 0; r < arr.length; r++) {
 			for(let c = 0; c < arr[r].length; c++) {
 				let val = arr[r][c];
-				if(val) {
+				if(val !== undefined && val !== null) {
 					val = val.toString();
 					val = val.replace(/</g, "&lt;");
 					val = val.replace(/>/g, "&gt;");
