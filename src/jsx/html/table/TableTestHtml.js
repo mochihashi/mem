@@ -131,17 +131,18 @@ export default function({title, list}) {
 	div.find('.test-row-yesno button.test-yes').click(clickDown);
 	div.find('.test-row-yesno button.test-no').click(clickNext);
 	
-	if(!isFirst) $(document).off('keydown', '.test');
-	$(document).on('keydown', '.test', function(e) {
-		if(!test.test) return;
-		if(e.keyCode == 37) { // left
-			showBefore();
-		} else if(e.keyCode == 39) { // right
-			showNext();
-		} else if(e.keyCode == 40) { // down
-			showDown();
-		}
-	});
+	if(isFirst) {
+		document.addEventListener('keydown', function(e){
+			if(!test.test || $('.test').length == 0) return;
+			if(e.keyCode == 37) { // left
+				showBefore();
+			} else if(e.keyCode == 39) { // right
+				showNext();
+			} else if(e.keyCode == 40) { // down
+				showDown();
+			}
+		});
+	}
 	
 	start();
 }

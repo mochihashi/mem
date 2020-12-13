@@ -34,19 +34,11 @@ try {
 	$dao->addValue('email', $email);
 	$dao->addValue('password_hash', $password_hash);
 	$dao->addValue('lang', $lang);
+	$dao->addValue('active', 1);
 	$dao->insert();
 	$id = $dao->getLastInsertId();
 	$user = array('id'=>$id, 'email'=>$email, 'password_hash'=>$password_hash);
 	$key = Password::encodeActivateKey($user);
-	
-	// send email
-	require_once("lang/lang.$lang.php");
-	$url = App::URL . 'api/account/activate/?key=' . $key;
-	$replaces = array('{#APPNAME}' => App::NAME, '{#URL}' => $url, '{#NAME}' => $name);
-	$title = strtr(Lang::ACTIVATE_MAIL_TITLE, $replaces);
-	$body = strtr(Lang::ACTIVATE_MAIL_BODY, $replaces);
-	$header = "From: " . App::MAIL_FROM . "\r\n";
-	mb_send_mail($email, $title, $body, $header);
 	
 	respond(array('id' => $id));
 	

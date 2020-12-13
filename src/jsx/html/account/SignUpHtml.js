@@ -51,6 +51,6 @@ export default function() {
 		password: {required: true, minLength: 8}
 	}, callback: function(data) {
 		container.closeOverlay('sign');
-		MessageHtml('activation-email-sent', 'account-registered');
+		SignInHtml();
 	}});
 }

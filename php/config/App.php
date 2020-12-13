@@ -1,7 +1,7 @@
 <?php
 class App {
 	const NAME = 'memorize words';
-	const URL = 'https://memorize-words.net/';
+	const URL = 'http://memorize-words.net/';
 	const MAIL_FROM = 'no-reply@memorize-words.net';
 	const ERROR_MAIL_TO = 'mochihashi@gmail.com';
 	
