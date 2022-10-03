@@ -5,14 +5,15 @@ import InputForm from 'common/InputForm';
 import SignInHtml from 'html/account/SignInHtml';
 import TableTestHtml from 'html/table/TableTestHtml';
 
-export default function({title, words, description, category, isPrivate, tableId}) {
-	if(!words) words = `English	Spanish
-Hello	Hola
-Good morning	Buenos días
-Goodbye	Adiós
-Thank you	Gracias
-Sorry	Lo siento
-I don't know	No lo sé`;
+export default function({title, words, description, category, isPublic, tableId}) {
+	let isPrivate = !isPublic;
+	if(!words) words = `English,Spanish
+Hello,Hola
+Good morning,Buenos días
+Goodbye,Adiós
+Thank you,Gracias
+Sorry,Lo siento
+I don't know,No lo sé`;
 
 	let div = container.renderOverlay('edit', escapeTemplate`
 <div class="row">

@@ -33,11 +33,13 @@ try {
 	// insert
 	$name = mapGet($form, 'name');
 	$parentId = mapGet($form, 'parent_id');
+	$private = mapGet($form, 'private') ? 1 : 0;
 	
 	$dao = new Dao($db, 'category');
 	$dao->addWhere('user_id', $userId);
 	$dao->addValue('name', $name);
 	$dao->addValue('parent_id', $parentId);
+	$dao->addValue('private', $private);
 	if($id) {
 		$dao->addWhere('id', $id);
 		$dao->update();
@@ -52,13 +54,13 @@ try {
 	require_once('common/DataFile.php');
 	$data = new DataFile();
 	$data->writeUserFile($userId, $userName);
-	$data->writeCategoryFile($userId, $id, $name);
+	$data->writeCategoryFile($userId, $id, $name, $private);
 	if($parentId > 0) {
 		$dao = new Dao($db, 'category');
 		$dao->addWhere('id', $parentId);
 		$parent = $dao->selectOne();
 		$data = new DataFile();
-		$data->writeCategoryFile($userId, $parentId, $parent['name']);
+		$data->writeCategoryFile($userId, $parentId, $parent['name'], $parent['private']);
 	}
 	
 	respond(array('id' => $id));

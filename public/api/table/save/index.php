@@ -41,19 +41,21 @@ try {
 	$description = mapGet($form, 'description');
 	$categoryName = mapGet($form, 'category');
 	$private = mapGet($form, 'private') ? 1 : 0;
+	$categoryPrivate = $private;
 	
 	$categoryId = 0;
 	if($categoryName) {
 		$categoryDao = new Dao($db, 'category');
 		$categoryDao->addWhere('user_id', $userId);
 		$categoryDao->addWhere('name', $categoryName);
-		$categoryDao->addSelect('id');
 		$category = $categoryDao->selectOne();
 		if($category) {
 			$categoryId = $category['id'];
+			$categoryPrivate = $category['private'];
 		} else {
 			$categoryDao->addValue('user_id', $userId);
 			$categoryDao->addValue('name', $categoryName);
+			$categoryDao->addValue('private', $private);
 			$categoryDao->insert();
 			$categoryId = $categoryDao->getLastInsertId();
 		}
@@ -81,7 +83,7 @@ try {
 	$data->writeUserFile($userId, $userName);
 	
 	if($categoryId) {
-		$data->writeCategoryFile($userId, $categoryId, $categoryName);
+	    $data->writeCategoryFile($userId, $categoryId, $categoryName, $categoryPrivate);
 	}
 	
 	$html = '
@@ -91,8 +93,6 @@ try {
 <h4 class="description">' . $description . '</h4>
 <pre class="words">' . $words . '</pre>';
 
-	if($private) $html = "<div style='display:none;'>$html</div>";
-	
 	$html = $data->getPageTypeHtml('table')
 	. $data->getUserLinkHtml($userId, $userName)
 	. $data->getCategoryLinkHtml($userId, $categoryId, $categoryName)

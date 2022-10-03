@@ -15,6 +15,7 @@ try {
 	
 	$dao = new Dao($db, 'category');
 	$categories = $dao->addOrderDesc('id')->setLimit(60)
+	->addWhere('private', 0)
 	->addSelect('id')->addSelect('name')
 	->addSelect('user_id')->addSelectAs('(select u.name from user u where u.id=user_id)', 'user_name')
 	->addWhereLike('name', $q)

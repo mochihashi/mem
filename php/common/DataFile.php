@@ -52,7 +52,6 @@ class DataFile {
 	public function getLinkHtml(&$list) {
 		$arr = array();
 		foreach($list as $row) {
-			if(@$row['private']) continue;
 			$url = @$row['url'];
 			$name = @$row['name'];
 			$description = @$row['description'];
@@ -99,7 +98,7 @@ class DataFile {
 		$userInfo['categories'] = rows2map($categories, 'id');
 		
 		$dao = new Dao($db, 'word_table');
-		$tables = $dao->addWhere('user_id', $userId)->addWhere('category_id', 0)->addWhere('private', 0)
+		$tables = $dao->addWhere('user_id', $userId)->addWhere('category_id', 0)
 		->addOrderDesc('id')
 		->addSelect('id')->addSelect('name')->addSelect('description')->addSelect('private')->select();
 		$this->setUrlToTableList($tables, $userId);
@@ -133,11 +132,11 @@ class DataFile {
 	/**
 	 * write /u{id}/c{id}/
 	 */
-	public function writeCategoryFile($userId, $categoryId, $categoryName) {
+	public function writeCategoryFile($userId, $categoryId, $categoryName, $private=0) {
 		global $db;
-		$categoryInfo = array('id'=>$categoryId, 'name'=>$categoryName);
+		$categoryInfo = array('id'=>$categoryId, 'name'=>$categoryName, 'private'=>$private);
 		$dao = new Dao($db, 'word_table');
-		$tables = $dao->addWhere('user_id', $userId)->addWhere('category_id', $categoryId)->addWhere('private', 0)
+		$tables = $dao->addWhere('user_id', $userId)->addWhere('category_id', $categoryId)
 		->addOrderDesc('id')
 		->addSelect('id')->addSelect('name')->addSelect('description')->select();
 		$this->setUrlToTableList($tables, $userId);

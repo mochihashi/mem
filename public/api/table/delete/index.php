@@ -46,7 +46,7 @@ try {
 		$categoryDao->addWhere('id', $categoryId);
 		$category = $categoryDao->selectOne();
 		
-		$data->writeCategoryFile($userId, $categoryId, $category['name']);
+		$data->writeCategoryFile($userId, $categoryId, $category['name'], $category['private']);
 	} else {
 		$data->writeUserFile($userId, $user['name']);
 	}

@@ -19,21 +19,14 @@ export default function() {
 	let words = div.find('.words').text();
 	let urlEsc = encodeURIComponent(document.URL);
 	let isMe = (userId == window.app.account.id);
-	let list = null;
-	let titleDisplay = title;
-	if(isPrivate && !isMe) {
-		titleDisplay = {raw: '(<span class="lang-private"></span>)'};
-		description = '';
-	} else {
-		list = new Table().parse(words);
-	}
+	let list = new Table().parse(words);
 	
 	div = container.renderMain(escapeTemplate`
 <div class="row">
 	<div class="col-lg-9">
 		<div class="card">
 			<div class="card-header">
-				<h3 class="card-title">${titleDisplay}</h3>
+				<h3 class="card-title">${title}</h3>
 				<div class="card-options">
 				<div class="btn-list">
 					<a href="http://www.facebook.com/share.php?u=${urlEsc}" target="_blank" rel="nofollow" title="Facebook" class="btn btn-sm btn-icon btn-facebook"><i class="fa fa-facebook"></i></a>
@@ -74,7 +67,7 @@ export default function() {
 	} else {
 		div.find('[name="btn-edit"]').click(()=>{TableEditHtml({
 			title: title, words: words, description: description, category: categoryName,
-			isPrivate: isPrivate, tableId: (isMe ? tableId : 0)
+			isPublic: (isMe ? !isPrivate : false), tableId: (isMe ? tableId : 0)
 		}); return false;});
 		div.find('[name="btn-test"]').click(()=>{TableTestHtml({
 			title: title, list: list
@@ -95,7 +88,6 @@ export default function() {
 				${data.categories[i].name}</a>`;
 			}
 			for(let i in data.tables) {
-				if(data.tables[i].private && !isMe) continue;
 				let active = (data.tables[i].id == tableId ? ' active' : '');
 				nav += `<a href="${data.tables[i].url}" class="list-group-item list-group-item-action${active}">
 				${data.tables[i].name}</a>`;
@@ -116,7 +108,6 @@ export default function() {
 			${data.categories[i].name}</a>`;
 		}
 		for(let i in data.tables) {
-			if(data.tables[i].private && !isMe) continue;
 			let active = (data.tables[i].id == tableId ? ' active' : '');
 			nav += `<a href="${data.tables[i].url}" class="list-group-item list-group-item-action${active}">
 			${data.tables[i].name}</a>`;
@@ -129,13 +120,17 @@ export default function() {
 function getTableHtml(list) {
 	if(!list) return '';
 	let table = '<table class="table mb-0 table-bordered">';
+	let headCols = 0;
 	for(let r = 0; r < list.length; r++) {
 		if(r == 0) table += '<thead class="thead-light">';
 		let row = list[r];
 		let td = (r == 0 ? 'th' : 'td');
 		table += '<tr>';
-		for(let c = 0; c < row.length; c++) {
-			table += `<${td}>${row[c]}</${td}>`;
+		if(r == 0) headCols = row.length;
+		let cols = Math.max(headCols, row.length);
+		for(let c = 0; c < cols; c++) {
+			let value = (c < row.length ? row[c] : '');
+			table += `<${td}>${value}</${td}>`;
 		}
 		table += '</tr>';
 		if(r == 0) table += '</thead>';

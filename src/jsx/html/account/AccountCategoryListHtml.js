@@ -18,7 +18,7 @@ export default function({categoryId = 0}) {
 			<div class="card-body">
 				<div class="dimmer"><div class="loader"></div><div class="dimmer-content">
 				<div class="btn-list">
-					<button class="btn btn-primary" data-control="create"><i class="fe fe-plus-circle mr-2"></i>Create</button>
+					<button class="btn btn-primary" data-control="create"><i class="fe fe-plus-circle mr-2"></i><span class="lang-create"></span></button>
 				</div>
 				<div class="table-responsive mt-2">
 					<table class="table mb-0 table-hover">

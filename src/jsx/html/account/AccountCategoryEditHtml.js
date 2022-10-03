@@ -2,7 +2,8 @@
 import * as container from 'html/Container';
 import InputForm from 'common/InputForm';
 
-export default function({id, parentId, name, callback}) {
+export default function({id, parentId, name, isPublic, callback}) {
+	let isPrivate = !isPublic;
 	let div = container.renderOverlay('account_category_edit', escapeTemplate`
 <div class="row">
 	<div class="col col-login mx-auto">
@@ -23,6 +24,14 @@ export default function({id, parentId, name, callback}) {
 				<div class="form-group">
 					<label class="form-label"><span class="lang-parent-category"></span></label>
 					<select class="form-control custom-select w-auto mr-2" name="parent_id"></select>
+				</div>
+				<div class="form-group">
+					<label class="form-label"><span class="lang-option"></span></label>
+					<label class="custom-switch">
+						<input type="checkbox" class="custom-switch-input" name="private" value="1" ${isPrivate ? 'checked' : ''}>
+						<span class="custom-switch-indicator"></span>
+						<span class="custom-switch-description"><span class="lang-private"></span></span>
+					</label>
 				</div>
 				<div class="form-footer">
 					<button type="submit" class="btn btn-primary"><i class="fe fe-save mr-2"></i><span class="lang-save"></span></button>

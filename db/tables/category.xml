@@ -16,6 +16,7 @@
 
 <column><field>user_id</field><type>int</type><not-null>*</not-null><default></default><note></note></column>
 <column><field>parent_id</field><type>int</type><not-null></not-null><default>0</default><note></note></column>
+<column><field>private</field><type>tinyint</type><not-null></not-null><default>0</default><note>1:activated</note></column>
 
 </columns>
 <primary-key>

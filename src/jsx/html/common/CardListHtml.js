@@ -5,8 +5,6 @@ export default function({list, userId=0}) {
 	if(!list) return html;
 	for(let i in list) {
 		let row = list[i];
-		let u = userId || row.user_id;
-		if(row.private && u != window.app.account.id) continue;
 		let body = '';
 		if(row.description) body += `<div class="text-muted">${row.description}</div>`;
 		if(!userId && row.user_url) {

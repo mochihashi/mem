@@ -1,16 +1,25 @@
 <?php
 class Auth {
-	public static function getCookieAuth() {
+	public static function getCookieAuth($required=true) {
 		$error = array('error'=>'auth-expired');
 		$auth = mapGet($_COOKIE, 'auth');
-		if(!$auth) respondError($error);
+		if(!$auth) {
+		    if(!$required) return $error;
+		    respondError($error);
+		}
 		
 		require_once('common/Password.php');
 		$auth = Password::decodeCookieKey($auth);
-		if(!$auth || mapGet($auth, 'expired')) respondError($error);
+		if(!$auth || mapGet($auth, 'expired')) {
+		    if(!$required) return $error;
+		    respondError($error);
+		}
 		
 		$id = mapGet($auth, 'id');
-		if(!$id) respondError($error);
+		if(!$id) {
+		    if(!$required) return $error;
+		    respondError($error);
+		}
 		return $auth;
 	}
 	
