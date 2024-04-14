@@ -60,9 +60,13 @@ export default class {
 		if(message.error && field) {
 			let obj = this.form.find('[name="' + field + '"]');
 			if(obj.length == 1) {
-				obj.addClass('is-invalid');
-				obj.parent().append(`<div class="invalid-feedback">${prefix}${text}${suffix}</div>`);
-				if(index == 0) form.find('[name="' + field + '"]').focus();
+				if(obj.attr('type') == 'hidden') {
+					obj.parent().append(`<div style="color:#f00;font-size:85%;">${prefix}${text}${suffix}</div>`);
+				} else {
+					obj.addClass('is-invalid');
+					obj.parent().append(`<div class="invalid-feedback">${prefix}${text}${suffix}</div>`);
+					if(index == 0) form.find('[name="' + field + '"]').focus();
+				}
 				return;
 			}
 		}

@@ -34,7 +34,8 @@ I don't know,No lo sé`;
 					<button name="btn-test" class="btn btn-primary btn-lg"><i class="fe fe-play mr-2"></i><span class="lang-start-test"></span></button>
 				</div>
 				<div class="form-group mt-2">
-					<textarea rows="9" name="words" class="form-control">${{raw:words}}</textarea>
+					<div name="jexcel" style="width:100%;overflow-x:auto;"></div>
+					<input type="hidden" name="words" value="">
 				</div>
 				<div class="row">
 					<div class="col-md-6">
@@ -76,31 +77,31 @@ I don't know,No lo sé`;
 </div><!-- .row -->
 	`);
 	
-	let obj = div.find('[name="words"]');
-	obj[0].setSelectionRange(0, obj.text().length); obj.focus();
-	obj.keydown(function(e){
-		if(e.keyCode == 9) { // tab
-			e.preventDefault();
-			var p1 = this.selectionStart, p2 = this.selectionEnd;
-			this.value = this.value.substr(0, p1) + "\t" + this.value.substr(p2);
-			this.setSelectionRange(p1 + 1, p1 + 1);
-		}
+	let obj = div.find('[name="jexcel"]');
+	let list = new Table().parse(words);
+	let columns = [];
+	if(!list) list = [['question', 'answer']];
+	for(let i = 0; i < list[0].length; i++) {
+		columns.push({ type: 'text', width: 200 });
+	}
+	let jexcel = jspreadsheet(obj[0], {
+	    data: list, columns: columns
 	});
+	if(list[list.length - 1][0]) jexcel.insertRow();
 	
 	if(!tableId) div.find('[name="control-overwrite"]').hide();
 	
 	let inputForm = new InputForm();
 	inputForm.assign({form: div.find('form'), fields: {
-		title: {required: true},
-		words: {required: true}
+		title: {required: true}
 	}, validate: function(form) {
-		let text = div.find('[name="words"]').val();
-		let list = new Table().parse(words, inputForm);
+		list = new Table().validate(jexcel.getData(), inputForm);
 		if(!list) return false;
 		if(!window.app.cookies.get('auth')) {
 			SignInHtml();
 			return false;
 		}
+		div.find('[name="words"]').val(new Table().array2text(list));
 		return true;
 	}, callback: function(data) {
 		if(data.table_path) window.app.goto({url: data.table_path, cb: true, post: true});
@@ -109,8 +110,7 @@ I don't know,No lo sé`;
 	div.find('[name="btn-test"]').click((event)=>{
 		event.preventDefault(); event.stopPropagation();
 		let title = div.find('[name="title"]').val();
-		let words = div.find('[name="words"]').val();
-		let list = new Table().parse(words, inputForm);
+		let list = new Table().validate(jexcel.getData(), inputForm);
 		if(!list) return;
 		TableTestHtml({title: title, list: list});
 	});

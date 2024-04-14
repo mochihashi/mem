@@ -17,6 +17,10 @@ window.app
 .includeScript('https://mochihashi.github.io/static/tabler/assets/js/vendors/bootstrap.bundle.min.js')
 .includeScript('https://mochihashi.github.io/static/tabler/assets/js/tabler-core.js')
 .includeStyle('https://mochihashi.github.io/static/tabler/assets/css/tabler.css')
+.includeScript('https://mochihashi.github.io/static/jexcel/jexcel.js')
+.includeStyle('https://mochihashi.github.io/static/jexcel/jexcel.css')
+.includeScript('https://mochihashi.github.io/static/jexcel/jsuites.js')
+.includeStyle('https://mochihashi.github.io/static/jexcel/jsuites.css')
 .includeStyle('css/style.css')
 ;
 

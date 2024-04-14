@@ -10,6 +10,10 @@ export default class {
 		if(!text) return null;
 		let isCsv = (text.indexOf('\t') < 0 && text.indexOf(',') >= 0);
 		let arr = CSV.parse(text, {delimiter: isCsv ? ',' : '\t'});
+		return this.validate(arr, inputForm);
+	}
+	
+	validate(arr, inputForm) {
 		if(arr.length < 3) {
 			if(inputForm) inputForm.setMessage({'field':'words', 'error':'row-short', 'prefix':3});
 			return null;
@@ -18,7 +22,9 @@ export default class {
 			if(inputForm) inputForm.setMessage({'field':'words', 'error':'column-short', 'prefix':2});
 			return null;
 		}
+		let arr2 = [];
 		for(let r = 0; r < arr.length; r++) {
+			let hasValue = false;
 			for(let c = 0; c < arr[r].length; c++) {
 				let val = arr[r][c];
 				if(val !== undefined && val !== null) {
@@ -42,9 +48,21 @@ export default class {
 					val = '';
 				}
 				arr[r][c] = val;
+				if(val) hasValue = true;
 			}
+			if(hasValue) arr2.push(arr[r]);
 		}
-		return arr;
+		if(arr2.length < 3) {
+			if(inputForm) inputForm.setMessage({'field':'words', 'error':'row-short', 'prefix':3});
+			return null;
+		}
+		return arr2;
+	}
+	
+	array2text(arr) {
+		let lines = [];
+		for(let i = 0; i < arr.length; i++) { lines.push(arr[i].join("\t")); }
+		return lines.join("\n");
 	}
 	
 	array2map(arr) {
