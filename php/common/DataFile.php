@@ -177,12 +177,15 @@ class DataFile {
 	/**
 	 * write index.html adding header and footer
 	 */
-	public function writeHtml($dir, $html, $title='', $description='') {
+	public function writeHtml($dir, $html, $title='', $description='', $imageFile='') {
 		$url = joinPath(App::URL, $this->getWebPath($dir));
 		if(substr($dir, -1) == '/') $dir = $dir . 'index.html';
 		$appName = App::NAME;
 		//if(!$description) $description = $title;
 		$title = $title ? "$title - $appName" : $appName;
+		
+		$ogImage = '';
+		if($imageFile) $ogImage = '<meta property="og:image" content="' . $url . $imageFile . '" />';
 		
 		$this->writeFile($dir, '<!doctype html>
 <html>
@@ -196,6 +199,7 @@ class DataFile {
 <meta property="og:title" content="' . $title . '" />
 <meta property="og:description" content="' . $description . '" />
 <meta property="og:site_name" content="' . $appName . '" />
+' . $ogImage . '
 <script src="https://mochihashi.github.io/static/js/jquery.min.js"></script>
 <script src="https://mochihashi.github.io/static/js/csv.min.js"></script>
 <script src="' . $this->getWebPath('js/script.js') . '"></script>

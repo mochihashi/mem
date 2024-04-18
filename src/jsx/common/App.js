@@ -143,14 +143,19 @@ export default class {
 		return args;
 	}
 	
-	readJson(url, callback, params, inputForm) {
+	readJson(url, callback, params, inputForm, isFormData = false) {
 		if(inputForm && !inputForm.startProcess()) return;
 		url = this.adjustUrl(url);
 		if(url.indexOf('/api/') < 0 && url.endsWith('/')) url = url + 'index.json';
 		let props = {};
 		if(params) {
-			props.type = "POST";
 			props.data = params;
+			props.type = "POST";
+			if(isFormData) {
+				props.dataType = "JSON";
+				props.processData = false;
+				props.contentType = false;
+			}
 		} else {
 			url += (url.indexOf('?') < 0) ? '?' : '&';
 			url += '.cb=' + new Date().getTime();
@@ -164,7 +169,10 @@ export default class {
 				let data = JSON.parse(text);
 				if(inputForm) inputForm.setMessages(data.responseMessages);
 				if(!(inputForm && data.error)) {
-					if(callback) callback(data);
+					if(callback) {
+						callback(data);
+						feather.replace();
+					}
 				}
 			} catch(e) {
 				console.log(e);

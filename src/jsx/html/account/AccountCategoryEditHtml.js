@@ -5,14 +5,15 @@ import InputForm from 'common/InputForm';
 export default function({id, parentId, name, isPublic, callback}) {
 	let isPrivate = !isPublic;
 	let div = container.renderOverlay('account_category_edit', escapeTemplate`
-<div class="row">
-	<div class="col col-login mx-auto">
+<div class="page-body">
+  <div class="row row-cards">
+	<div class="col col-md-6 mx-auto">
 		<form class="card" action="api/category/save/">
 			<input type="hidden" name="id" value="${id}" />
 			<div class="card-header">
 				<h3 class="card-title"><span class="lang-category"></span></h3>
 				<div class="card-options">
-					<a href="javascript:void(0)" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
+					<a href="javascript:void(0)" class="card-options-remove" data-toggle="card-remove"><i data-feather="x" class="icon"></i></a>
 				</div>
 			</div>
 			<div class="card-body p-6">
@@ -23,7 +24,7 @@ export default function({id, parentId, name, isPublic, callback}) {
 				</div>
 				<div class="form-group">
 					<label class="form-label"><span class="lang-parent-category"></span></label>
-					<select class="form-control custom-select w-auto mr-2" name="parent_id"></select>
+					<select class="form-control custom-select w-auto me-2" name="parent_id"></select>
 				</div>
 				<div class="form-group">
 					<label class="form-label"><span class="lang-option"></span></label>
@@ -34,13 +35,14 @@ export default function({id, parentId, name, isPublic, callback}) {
 					</label>
 				</div>
 				<div class="form-footer">
-					<button type="submit" class="btn btn-primary"><i class="fe fe-save mr-2"></i><span class="lang-save"></span></button>
+					<button type="submit" class="btn btn-primary"><i data-feather="save" class="icon"></i> <span class="lang-save"></span></button>
 				</div>
 				</div></div>
 			</div>
 		</form>
 	</div><!-- .col-login -->
-</div><!-- .row -->
+  </div><!-- .row -->
+</div>
 	`);
 	div.find('[name="name"]').focus();
 	let inputForm = new InputForm();

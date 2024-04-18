@@ -25,7 +25,7 @@ require_once('config/App.php');
 $form = array();
 foreach($_GET as $k => $v) { $form[$k] = $v; }
 foreach($_POST as $k => $v) { $form[$k] = $v; }
-if($argc) { for($i = 1; $i + 1 < $argc; $i += 2) { $form[$argv[$i]] = $argv[$i + 1]; }}
+if(@$argc) { for($i = 1; $i + 1 < $argc; $i += 2) { $form[$argv[$i]] = $argv[$i + 1]; }}
 
 /**
  * response

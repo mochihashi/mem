@@ -36,6 +36,7 @@ export function renderOverlay(pageName, html) {
 		event.preventDefault();
 		me.find('.card').toggleClass('card-fullscreen');
 	});
+	feather.replace();
 	return me;
 }
 
@@ -70,7 +71,7 @@ export function renderOverlayCard({pageName, title = '', colClass = 'col-12', ht
 			<div class="card-header">
 				<h3 class="card-title">${title}</h3>
 				<div class="card-options">
-					<a href="javascript:void(0)" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
+					<a href="javascript:void(0)" class="card-options-remove" data-toggle="card-remove"><i data-feather="x" class="icon"></i></a>
 				</div>
 			</div>
 			<div class="card-body p-6">

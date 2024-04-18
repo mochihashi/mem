@@ -12,14 +12,16 @@ export default function() {
 <div class="page-header">
 	<h1 class="page-title">
 		<div class="d-flex align-items-center pt-3">
-			<div class="avatar avatar-sm mr-2"><i class="fe fe-user"></i></div>
+			<div class="avatar avatar-sm me-2"><i data-feather="user" class="icon"></i></div>
 			<div>
 				<a href="${userDir}" class="text-default" id="a-user">${userName}</a>
 			</div>
 		</div>
 	</h1>
 </div>
-<div class="row" id="row-tables"></div>
+<div class="page-body">
+  <div class="row row-cards" id="row-tables"></div>
+</div>
 	`);
 	
 	window.app.readJson(userDir, function(data){
@@ -43,7 +45,7 @@ export default function() {
 		}
 		links += CardListHtml({list: data.tables, userId: userId});
 		if(!links) links = `<span class="lang-msg-no-data"></span>`;
-		div.find('#row-tables').html(links);
+		div.find('#row-tables').html(links).addClass('row-cards');
 	});
 }
 
@@ -54,14 +56,14 @@ function nestedCard(category, parentMap) {
 		for(let c in children) {
 			childrenHtml += nestedCard(children[c], parentMap);
 		}
-		childrenHtml = `<div class="card-body d-flex flex-column">${childrenHtml}</div>`;
+		childrenHtml = `<div class="card-body d-flex flex-column"><div class="row row-cards">${childrenHtml}</div></div>`;
 	}
 	return `
-	<div class="card">
+	<div class="col-12"><div class="card card-stacked">
 		<div class="card-header">
 			<h3 class="card-title"><a href="${category.url}">${category.name}</a></h3>
 		</div>
 		${childrenHtml}
-	</div>
+	</div></div>
 	`;
 }

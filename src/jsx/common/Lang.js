@@ -29,6 +29,7 @@ export default class {
 		window.app.includeStyle(this.cssPath + lang + '.css');
 		if(this.jsPath) window.app.includeScript(this.jsPath + lang + '.js', true);
 		window.app.cookies.set('lang', lang);
+		document.getElementsByTagName("html")[0].lang = lang;
 	}
 	
 	getText(key) {

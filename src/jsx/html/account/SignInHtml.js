@@ -13,7 +13,7 @@ export default function() {
 			<div class="card-header">
 				<h3 class="card-title"><span class="lang-sign-in"></span></h3>
 				<div class="card-options">
-					<a href="javascript:void(0)" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
+					<a href="javascript:void(0)" class="card-options-remove" data-toggle="card-remove"><i data-feather="x" class="icon"></i></a>
 				</div>
 			</div>
 			<div class="card-body p-6">

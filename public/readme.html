@@ -14,14 +14,16 @@
 
 <div class="page">
 <div class="page-main">
-<div class="header py-4"></div>
+<div class="header"></div>
 
-<div class="my-3 my-md-5">
-	<div class="container" id="main-container">
+<div class="page-wrapper">
+	<div class="container-xl" id="main-container">
 <div class="page-header">
-	<h1 class="page-title"><i class="fe fe-info"></i> Getting started</h1>
+	<h1 class="page-title"><i data-feather="info" class="icon"></i> Getting started</h1>
 </div>
-<div class="col-lg-12">
+<div class="page-body">
+<div class="row row-cards">
+  <div class="col-lg-12">
 	<div class="card">
 		<div class="card-header">
 			<h3 class="card-title">1. Press the Create button above.</h3>
@@ -30,18 +32,19 @@
 			<img src="images/readme/create.png" width="97" />
 		</div>
 	</div>
-
+  </div>
+  <div class="col-lg-12">
 	<div class="card">
 		<div class="card-header">
-			<h3 class="card-title">2. Edit the CSV(comma-separated values) dictionary table in the text area.
+			<h3 class="card-title">2. Edit the dictionary table.
 				<br/>Note that a dictionary table must have more than two columns, and a title row.</h3>
 		</div>
 		<div class="card-body">
-			<img src="images/readme/textarea.png" width="274" />
-			<br/>Tips: You can use TSV(tab-separated values) format instead.
+			<img src="images/readme/jexcel.png" width="500" />
 		</div>
 	</div>
-
+  </div>
+  <div class="col-lg-12">
 	<div class="card">
 		<div class="card-header">
 			<h3 class="card-title">3. Press the Start test button.</h3>
@@ -50,7 +53,8 @@
 			<img src="images/readme/start_test.png" width="134" />
 		</div>
 	</div>
-
+  </div>
+  <div class="col-lg-12">
 	<div class="card">
 		<div class="card-header">
 			<h3 class="card-title">4. Then the first question will be displayed. Choose the correct answer between options.</h3>
@@ -59,7 +63,8 @@
 			<img src="images/readme/question.png" width="664" />
 		</div>
 	</div>
-
+  </div>
+  <div class="col-lg-12">
 	<div class="card">
 		<div class="card-header">
 			<h3 class="card-title">5. If you choose a wrong answer, the correct answer will be displayed, and this question will be repeated again later.</h3>
@@ -68,7 +73,8 @@
 			<img src="images/readme/wrong.png" width="250" />
 		</div>
 	</div>
-
+  </div>
+  <div class="col-lg-12">
 	<div class="card">
 		<div class="card-header">
 			<h3 class="card-title">6. You can change the column of question.</h3>
@@ -77,7 +83,8 @@
 			<img src="images/readme/reverse.png" width="146" />
 		</div>
 	</div>
-
+  </div>
+  <div class="col-lg-12">
 	<div class="card">
 		<div class="card-header">
 			<h3 class="card-title">7. And question and answer will be reversed.</h3>
@@ -86,6 +93,8 @@
 			<img src="images/readme/question_reversed.png" width="661" />
 		</div>
 	</div>
+</div>
+</div>
 </div>
 		
 	</div><!-- .container -->
@@ -97,5 +106,6 @@
 
 </div><!-- .page -->
 
+<script>setTimeout(function(){ feather.replace();}, 100);</script>
 </body>
 </html>

@@ -6,14 +6,14 @@ export default class {
 		this.AUDIO_EXTS = this.array2map("mp3,wav".split(','));
 	}
 	
-	parse(text, inputForm) {
+	parse(text, inputForm, isForTest = true) {
 		if(!text) return null;
 		let isCsv = (text.indexOf('\t') < 0 && text.indexOf(',') >= 0);
 		let arr = CSV.parse(text, {delimiter: isCsv ? ',' : '\t'});
-		return this.validate(arr, inputForm);
+		return this.validate(arr, inputForm, isForTest);
 	}
 	
-	validate(arr, inputForm) {
+	validate(arr, inputForm, isForTest = true) {
 		if(arr.length < 3) {
 			if(inputForm) inputForm.setMessage({'field':'words', 'error':'row-short', 'prefix':3});
 			return null;
@@ -28,19 +28,21 @@ export default class {
 			for(let c = 0; c < arr[r].length; c++) {
 				let val = arr[r][c];
 				if(val !== undefined && val !== null) {
-					val = val.toString();
-					val = val.replace(/</g, "&lt;");
-					val = val.replace(/>/g, "&gt;");
-					if(val.indexOf("\n") >= 0) {
-						val = val.replace(/\n/g, "<br/>");
-					} else if(r > 0) {
-						let p = val.lastIndexOf('.');
-						if(p > 0) {
-							let ext = val.slice(p + 1);
-							if(this.IMG_EXTS[ext]) {
-								val = '<img src="' + val + '" />';
-							} else if(this.AUDIO_EXTS[ext]) {
-								val = '<audio src="' + val + '" controls onclick="event.stopPropagation();">' + val + '</audio>';
+					if(isForTest) {
+						val = val.toString();
+						val = val.replace(/</g, "&lt;");
+						val = val.replace(/>/g, "&gt;");
+						if(val.indexOf("\n") >= 0) {
+							val = val.replace(/\n/g, "<br/>");
+						} else if(r > 0) {
+							let p = val.lastIndexOf('.');
+							if(p > 0) {
+								let ext = val.slice(p + 1);
+								if(this.IMG_EXTS[ext]) {
+									val = '<img src="' + val + '" />';
+								} else if(this.AUDIO_EXTS[ext]) {
+									val = '<audio src="' + val + '" controls onclick="event.stopPropagation();">' + val + '</audio>';
+								}
 							}
 						}
 					}

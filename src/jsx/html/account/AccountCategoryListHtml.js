@@ -6,19 +6,20 @@ import AccountCategoryEditHtml from 'html/account/AccountCategoryEditHtml';
 
 export default function({categoryId = 0}) {
 	let div = container.renderOverlay('account_category_list', escapeTemplate`
-<div class="row">
+<div class="page-body">
+  <div class="row row-cards">
 	<div class="col col-lg-9 mx-auto">
 		<form class="card">
 			<div class="card-header">
 				<h3 class="card-title"><span class="lang-categories"></span></h3>
 				<div class="card-options">
-					<a href="javascript:void(0)" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
+					<a href="javascript:void(0)" class="card-options-remove" data-toggle="card-remove"><i data-feather="x" class="icon"></i></a>
 				</div>
 			</div>
 			<div class="card-body">
 				<div class="dimmer"><div class="loader"></div><div class="dimmer-content">
 				<div class="btn-list">
-					<button class="btn btn-primary" data-control="create"><i class="fe fe-plus-circle mr-2"></i><span class="lang-create"></span></button>
+					<button class="btn btn-primary" data-control="create"><i data-feather="plus-circle" class="icon"></i> <span class="lang-create"></span></button>
 				</div>
 				<div class="table-responsive mt-2">
 					<table class="table mb-0 table-hover">
@@ -36,6 +37,7 @@ export default function({categoryId = 0}) {
 			</div><!-- .card-body -->
 		</form><!-- .card -->
 	</div>
+  </div>
 </div>
 	`);
 	
@@ -61,10 +63,10 @@ function setTable(div) {
 	<td>${row.parent_id > 0 ? data.categories[row.parent_id].name : ''}</td>
 	<td>
 		<div class="btn-list">
-		<a class="btn btn-outline-secondary" href="${row.url}"><i class="fe fe-external-link mr-2"></i><span class="lang-view"></span></a>
-		<button class="btn btn-outline-secondary" data-control="table" data-id="${row.id}"><i class="fe fe-grid mr-2"></i><span class="lang-table"></span></button>
-		<button class="btn btn-outline-primary" data-control="edit" data-id="${row.id}"><i class="fe fe-edit mr-2"></i><span class="lang-edit"></span></button>
-		<button class="btn btn-outline-danger" data-control="delete" data-id="${row.id}"><i class="fe fe-delete mr-2"></i><span class="lang-delete"></span></button>
+		<a class="btn btn-outline-secondary" href="${row.url}"><i data-feather="external-link" class="icon"></i> <span class="lang-view"></span></a>
+		<button class="btn btn-outline-secondary" data-control="table" data-id="${row.id}"><i data-feather="grid" class="icon"></i> <span class="lang-table"></span></button>
+		<button class="btn btn-outline-primary" data-control="edit" data-id="${row.id}"><i data-feather="edit" class="icon"></i> <span class="lang-edit"></span></button>
+		<button class="btn btn-outline-danger" data-control="delete" data-id="${row.id}"><i data-feather="delete" class="icon"></i> <span class="lang-delete"></span></button>
 		</div>
 	</td>
 </tr>

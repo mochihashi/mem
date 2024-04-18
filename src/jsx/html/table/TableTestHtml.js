@@ -12,44 +12,44 @@ export default function({title, list}) {
 	test.isMute = (toInt(window.app.cookies.get('mute')) == 1);
 	
 	let div = container.renderOverlay('test', escapeTemplate`
-<div class="row">
+<div class="page-body">
+  <div class="row row-cards">
 	<div class="col-12">
 		<div class="card test">
 			<div class="card-header">
 				<h3 class="card-title">${title}</h3>
-				<div class="card-options">
-					<a href="javascript:void(0)" class="card-options-fullscreen" data-toggle="card-fullscreen"><i class="fe fe-maximize"></i></a>
-					<a href="javascript:void(0)" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
+				<div class="card-actions">
+					<a href="javascript:void(0)" class="card-options-remove" data-toggle="card-remove"><i data-feather="x" class="icon"></i></a>
 				</div>
 			</div>
 			<div class="card-header d-flex flex-wrap align-items-center">
 				<select class="form-control custom-select w-auto" id="test-select-column1"></select>
-				<button name="test-reverse" title="reverse" class="btn btn-icon btn-outline-secondary ml-1"><i class="fa fa-exchange"></i></button>
-				<select class="form-control custom-select w-auto ml-1" id="test-select-column2"></select>
+				<button name="test-reverse" title="reverse" class="btn btn-icon btn-outline-secondary ms-1"><i data-feather="refresh-cw" class="icon"></i></button>
+				<select class="form-control custom-select w-auto ms-1" id="test-select-column2"></select>
 				
 				<div class="selectgroup">
-					<label class="selectgroup-item ml-2 my-auto" title="random">
-						<input type="checkbox" name="test-random" value="1" class="selectgroup-input" checked="checked">
-						<span class="selectgroup-button selectgroup-button-icon"><i class="fe fe-shuffle"></i></span>
+					<label class="form-selectgroup-item ms-2 my-auto" title="random">
+						<input type="checkbox" name="test-random" value="1" class="form-selectgroup-input" checked="checked">
+						<span class="form-selectgroup-label"><i data-feather="shuffle" class="icon"></i></span>
 					</label>
 				</div>
 				<div class="selectgroup">
-					<label class="selectgroup-item ml-2 my-auto" title="hide answers">
-						<input type="checkbox" name="test-yesno" value="1" class="selectgroup-input">
-						<span class="selectgroup-button selectgroup-button-icon"><i class="fe fe-eye-off"></i></span>
+					<label class="form-selectgroup-item ms-2 my-auto" title="hide answers">
+						<input type="checkbox" name="test-yesno" value="1" class="form-selectgroup-input">
+						<span class="form-selectgroup-label"><i data-feather="eye-off" class="icon"></i></span>
 					</label>
 				</div>
 				<div class="selectgroup">
-					<label class="selectgroup-item ml-2 my-auto" title="mute">
-						<input type="checkbox" name="test-mute" value="1" class="selectgroup-input">
-						<span class="selectgroup-button selectgroup-button-icon"><i class="fe fe-volume-x"></i></span>
+					<label class="form-selectgroup-item ms-2 my-auto" title="mute">
+						<input type="checkbox" name="test-mute" value="1" class="form-selectgroup-input">
+						<span class="form-selectgroup-label"><i data-feather="volume-x" class="icon"></i></span>
 					</label>
 				</div>
 				<div>
-					<button name="test-retry" title="retry" class="btn btn-icon btn-outline-secondary ml-2"><i class="fe fe-rotate-cw"></i></button>
+					<button name="test-retry" title="retry" class="btn btn-icon btn-outline-secondary ms-2"><i data-feather="rotate-cw" class="icon"></i></button>
 				</div>
-				<div class="input-icon ml-2">
-					<span class="input-icon-addon"><i class="fe fe-search"></i></span>
+				<div class="input-icon ms-2">
+					<span class="input-icon-addon"><i data-feather="search" class="icon"></i></span>
 					<input name="test-search" type="text" class="form-control w-10 text-search">
 				</div>
 			</div>
@@ -57,7 +57,7 @@ export default function({title, list}) {
 
 <div class="row test-row-nav">
 	<div class="col-3 text-left">
-		<button name="test-before" class="btn btn-icon btn-outline-secondary"><i class="fe fe-chevron-left"></i></button>
+		<button name="test-before" class="btn btn-icon btn-outline-secondary"><i data-feather="chevron-left" class="icon"></i></button>
 	</div>
 	<div class="col-6 text-center">
 		<div name="test-page" class="small text-muted">(1 / 8)</div>
@@ -81,10 +81,10 @@ export default function({title, list}) {
 </div>
 <div class="row test-row-yesno">
 	<div class="col-6 mt-2">
-		<button class="btn btn-outline-primary btn-lg btn-block test-yes"><span class="lang-know"></span><i class="fe fe-chevron-down mr-2"></i></button>
+		<button class="btn btn-outline-primary w-100 btn-lg btn-block test-yes"><span class="lang-know"></span><i data-feather="chevron-down" class="icon"></i></button>
 	</div>
 	<div class="col-6 mt-2">
-		<button class="btn btn-outline-danger btn-lg btn-block test-no"><span class="lang-not-know"></span><i class="fe fe-chevron-right mr-2"></i></button>
+		<button class="btn btn-outline-danger w-100 btn-lg btn-block test-no"><span class="lang-not-know"></span><i data-feather="chevron-right" class="icon"></i></button>
 	</div>
 </div>
 <div class="row test-row-answer mt-5">
@@ -92,7 +92,7 @@ export default function({title, list}) {
 		<table class="table table-borderless">
 		</table>
 		<div class="btn-list mt-5 text-right">
-			<button name="test-next" class="btn btn-outline-primary btn-lg btn-block"><i class="fe fe-chevron-right mr-2"></i><span class="lang-next"></span></button>
+			<button name="test-next" class="btn btn-outline-primary btn-lg btn-block"><i data-feather="chevron-right" class="icon"></i> <span class="lang-next"></span></button>
 		</div>
 	</span>
 </div>
@@ -100,8 +100,8 @@ export default function({title, list}) {
 	<span class="test-answer text-center">
 		<span name="test-end-message"><span class="lang-msg-finished"></span></span>
 		<div class="btn-list mt-5">
-			<button name="test-retry" class="btn btn-outline-secondary"><i class="fe fe-rotate-cw mr-2"></i><span class="lang-retry"></span></button>
-			<button name="test-reverse" class="btn btn-outline-primary"><i class="fa fa-exchange mr-2"></i><span class="lang-reverse"></span></button>
+			<button name="test-retry" class="btn btn-outline-secondary"><i data-feather="rotate-cw" class="icon"></i> <span class="lang-retry"></span></button>
+			<button name="test-reverse" class="btn btn-outline-primary"><i data-feather="refresh-cw" class="icon"></i> <span class="lang-reverse"></span></button>
 		</div>
 	</span>
 </div>
@@ -109,7 +109,8 @@ export default function({title, list}) {
 			</div><!-- .card-body -->
 		</div><!-- .card -->
 	</div><!-- .col-12 -->
-</div><!-- .row -->
+  </div><!-- .row -->
+</div>
 	`);
 	
 	setColumnOption('#test-select-column1', test.col1, -1);
@@ -239,7 +240,7 @@ function showQuestion(add, push) {
 			for(let i = 0; i < options.length; i++) {
 				let label = options[i].label, isAnswer = options[i].isAnswer;
 				html += `<div class="col-md-6 mt-2">
-				<button class="btn btn-secondary btn-lg btn-block ${isAnswer ? 'test-yes' : 'test-no'}">${label}</button>
+				<button class="btn btn-outline-secondary w-100 btn-lg btn-block ${isAnswer ? 'test-yes' : 'test-no'}">${label}</button>
 				</div>`;
 			}
 			$('.test-row-options').html(html);
@@ -327,7 +328,7 @@ function showDown(isClick) {
 	if(test.isYesNo) {
 		showQuestion(1);
 	} else {
-		$('.test-question').html('<span class="test-ok"><i class="fe fe-check-circle"></i></span>');
+		$('.test-question').html('<span class="test-ok"><i data-feather="check-circle" class="icon"></i></span>');
 		setTimeout(function(){ showQuestion(1); }, 1000);
 	}
 }

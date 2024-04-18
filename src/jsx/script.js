@@ -14,14 +14,15 @@ window.app = new App({rootDirs: '/public/'});
 window.app
 .includeStyle('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
 .includeStyle('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,500,500i,600,600i,700,700i&amp;subset=latin-ext')
-.includeScript('https://mochihashi.github.io/static/tabler/assets/js/vendors/bootstrap.bundle.min.js')
-.includeScript('https://mochihashi.github.io/static/tabler/assets/js/tabler-core.js')
-.includeStyle('https://mochihashi.github.io/static/tabler/assets/css/tabler.css')
+.includeScript('/js/shared/bootstrap.bundle.min.js')
+.includeScript('/js/shared/tabler.min.js')
+.includeStyle('https://mochihashi.github.io/static/tabler/assets/css/tabler.min.css')
 .includeScript('https://mochihashi.github.io/static/jexcel/jexcel.js')
 .includeStyle('https://mochihashi.github.io/static/jexcel/jexcel.css')
 .includeScript('https://mochihashi.github.io/static/jexcel/jsuites.js')
 .includeStyle('https://mochihashi.github.io/static/jexcel/jsuites.css')
-.includeStyle('css/style.css')
+.includeStyle('/css/style.css')
+.includeScript('/js/shared/feather.min.js')
 ;
 
 window.app.cookies = new Cookies();
@@ -38,7 +39,8 @@ $(document).ready(function(){
 	else if(pageType == 'category') CategoryHtml();
 	else if(pageType == 'user') UserHtml();
 	
-	if(location.hostname != '127.0.0.1') {
+	if(location.hostname != '127.0.0.1' && location.hostname != 'mem.local') {
 		window.app.includeScript('https://mochihashi.github.io/static/pixel/tracking.js');
 	}
+	setTimeout(function(){ feather.replace();}, 100);
 });

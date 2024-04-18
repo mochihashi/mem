@@ -34,7 +34,7 @@ export default class {
 			
 			if(confirmMessage && !confirm(window.app.lang.getText(confirmMessage))) return;
 			
-			window.app.readJson(form.attr('action'), callback, form.serialize(), me);
+			window.app.readJson(form.attr('action'), callback, new FormData(form[0]), me, true);
 		});
 	}
 	

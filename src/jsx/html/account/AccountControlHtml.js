@@ -19,8 +19,8 @@ export default function(data) {
 	let div = container.renderTo('#account-control', `
 <div class="dropdown" id="div-login-user">
 	<a href="javascript:void(0)" class="nav-link pr-0 leading-none" data-toggle="dropdown">
-	<span class="avatar"><i class="fe fe-user"></i></span>
-	<span class="ml-2 d-none d-lg-block">
+	<span class="avatar avatar-sm"><i data-feather="user" class="icon"></i></span>
+	<span class="ms-2 d-none d-lg-block">
 	<span class="text-default">${window.app.account.name}</span>
 	</span>
 	</a>

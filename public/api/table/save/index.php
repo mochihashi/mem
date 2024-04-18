@@ -43,6 +43,16 @@ try {
 	$private = mapGet($form, 'private') ? 1 : 0;
 	$categoryPrivate = $private;
 	
+	$imageFile = '';
+	$imageFrom = '';
+	if(@$_FILES['image_file'] && @$_FILES['image_file']['size'] > 0) {
+	    $info = $_FILES['image_file'];
+	    $ext = pathinfo($info['name'], PATHINFO_EXTENSION);
+	    if(!$ext) $ext = 'jpg';
+	    $imageFile = "image.$ext";
+	    $imageFrom = $info['tmp_name'];
+	}
+	
 	$categoryId = 0;
 	if($categoryName) {
 		$categoryDao = new Dao($db, 'category');
@@ -67,6 +77,7 @@ try {
 	$dao->addValue('category_id', $categoryId);
 	$dao->addValue('description', $description);
 	$dao->addValue('private', $private);
+	if($imageFile) $dao->addValue('image_file', $imageFile);
 	if($tableId && $overwrite) {
 		$dao->addWhere('id', $tableId);
 		$dao->addWhere('user_id', $userId);
@@ -74,6 +85,12 @@ try {
 	} else {
 		$dao->insert();
 		$tableId = $dao->getLastInsertId();
+	}
+	
+	if(!$imageFile && $overwrite) {
+	    $dao = new Dao($db, 'word_table');
+	    $table = $dao->addWhere('id', $tableId)->selectOne();
+	    $imageFile = $table['image_file'];
 	}
 	
 	//----------------------
@@ -89,6 +106,7 @@ try {
 	$html = '
 <input type="hidden" name="table_id" value="' . $tableId . '" />
 <input type="hidden" name="private" value="' . $private . '" />
+<input type="hidden" name="image_file" value="' . $imageFile . '" />
 <h1 class="title">' . $title . '</h1>
 <h4 class="description">' . $description . '</h4>
 <pre class="words">' . $words . '</pre>';
@@ -99,7 +117,8 @@ try {
 	. $html;
 
 	$tableDir = $data->getTableDir($userId, $tableId);
-	$data->writeHtml($tableDir, $html, $title, $description);
+	$data->writeHtml($tableDir, $html, $title, $description, $imageFile);
+	if($imageFile) copy($imageFrom, $data->getFilePath($tableDir . $imageFile));
 	
 	respond(array('table_id' => $tableId, 'table_path' => $data->getWebPath($tableDir)));
 	
