@@ -109,6 +109,7 @@ try {
 <input type="hidden" name="image_file" value="' . $imageFile . '" />
 <h1 class="title">' . $title . '</h1>
 <h4 class="description">' . $description . '</h4>
+' . ($imageFile ? "<img src=\"$imageFile\" width=\"200px;\"/>" : "") . '
 <pre class="words">' . $words . '</pre>';
 
 	$html = $data->getPageTypeHtml('table')
