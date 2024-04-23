@@ -5,8 +5,9 @@ import InputForm from 'common/InputForm';
 
 export default function() {
 	let div = container.renderOverlay('forgot-password', `
-<div class="row">
-	<div class="col col-login mx-auto">
+<div class="page-body">
+  <div class="row row-cards">
+	<div class="col col-md-6 mx-auto">
 		<form class="card" action="api/account/resetPassword/">
 			<div class="card-header">
 				<h3 class="card-title"><span class="lang-reset-password"></span></h3>
@@ -28,7 +29,8 @@ export default function() {
 			</div>
 		</form>
 	</div><!-- .col-login -->
-</div><!-- .row -->
+  </div><!-- .row -->
+</div>
 	`);
 	div.find('[name="email"]').focus();
 	new InputForm().assign({form: div.find('form'), fields: {

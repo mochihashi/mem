@@ -119,7 +119,7 @@ try {
 
 	$tableDir = $data->getTableDir($userId, $tableId);
 	$data->writeHtml($tableDir, $html, $title, $description, $imageFile);
-	if($imageFile) copy($imageFrom, $data->getFilePath($tableDir . $imageFile));
+	if($imageFile && $imageFrom) copy($imageFrom, $data->getFilePath($tableDir . $imageFile));
 	
 	respond(array('table_id' => $tableId, 'table_path' => $data->getWebPath($tableDir)));
 	

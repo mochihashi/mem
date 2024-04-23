@@ -1,6 +1,7 @@
 <?php
 class Password {
-	const PREFIX = 'SwZ3A2hk';
+    const ALGORITHM = 'AES-256-CBC';
+	const SECRET_IV = 'VmAU8B4sP63gPJjJ';  // 16bytes
 	
 	public static function hashPassword($password) {
 		return password_hash($password, PASSWORD_DEFAULT);
@@ -11,13 +12,12 @@ class Password {
 	}
 	
 	private static function encodeKey(&$user, $secretKey) {
-		include_once('Crypt/Blowfish.php');
-		$blowfish = new Crypt_Blowfish($secretKey);
 		$time = time();
 		$id = $user['id'];
 		$hash = self::shortHash($user['password_hash']);
-		$key = "$time\t$id\t$hash\t" . self::PREFIX;
-		return bin2hex($blowfish->encrypt($key));
+		$key = "$time\t$id\t$hash";
+		$enc = openssl_encrypt($key, self::ALGORITHM, $secretKey, 0, self::SECRET_IV);
+		return bin2hex($enc);
 	}
 	
 	private static function shortHash($hash) { return substr($hash, -20); }
@@ -29,13 +29,10 @@ class Password {
 	}
 	
 	private static function decodeKey($key, $secretKey, $expireHours = 0) {
-		include_once('Crypt/Blowfish.php');
-		$blowfish = new Crypt_Blowfish($secretKey);
-		$key = rtrim($blowfish->decrypt(pack("H*", $key)));
+		$dec = pack("H*", $key);
+		$key = openssl_decrypt($dec, self::ALGORITHM, $secretKey, 0, self::SECRET_IV);
 		$arr = explode("\t", $key);
-		if(count($arr) < 4) return null;
-		$prefix = $arr[3];
-		if($prefix != self::PREFIX) return null;
+		if(count($arr) < 3) return null;
 		$time = intval($arr[0]);
 		$id = intval($arr[1]);
 		$hash = $arr[2];
