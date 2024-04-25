@@ -41,9 +41,12 @@ function respondErrors($errors) {
 function respondError($error) {
 	respond(array("error" => 1, "responseMessages" => array($error)));
 }
+function respondDebug($message) {
+    respondError(array('error' => 'error', 'suffix' => ': ' . $message));
+}
 function respondException(&$e) {
 	global $form;
-	$message = $e->getMessage(); // . " @" . $e->getFile() . "#" . $e->getLine();
+	$message = $e->getMessage() . " @" . $e->getFile() . "#" . $e->getLine();
 	$error = array('error' => 'error', 'suffix' => ': ' . $message);
 	if(App::ERROR_MAIL_TO) {
 		$body = $e->getMessage() . " @" . $e->getFile() . "#" . $e->getLine();

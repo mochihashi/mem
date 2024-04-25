@@ -114,8 +114,7 @@ class Dao {
 	}
 	
 	public function getLastInsertId() {
-		$ret = $this->execute('SELECT last_insert_id() AS id', true);
-		return $ret[0]['id'];
+	    return $this->_db->lastInsertId();
 	}
 	
 	public function update() {
@@ -144,22 +143,26 @@ class Dao {
 	
 	public function execute($sql, $isSelect = false) {
 		$result = false;
-		if(count($this->_params) == 0) {
-			if($isSelect) {
-				$result = $this->_db->query($sql, PDO::FETCH_ASSOC);
-			} else {
-				$result = $this->_db->exec($sql);
-			}
-		} else {
-			$stmt = $this->_db->prepare($sql);
-			$result = $stmt->execute($this->_params);
-			if($isSelect) {
-				if($result) {
-					$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-				} else {
-					$result = array();
-				}
-			}
+		try {
+    		if(count($this->_params) == 0) {
+    			if($isSelect) {
+    				$result = $this->_db->query($sql, PDO::FETCH_ASSOC);
+    			} else {
+    				$result = $this->_db->exec($sql);
+    			}
+    		} else {
+    			$stmt = $this->_db->prepare($sql);
+    			$result = $stmt->execute($this->_params);
+    			if($isSelect) {
+    				if($result) {
+    					$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    				} else {
+    					$result = array();
+    				}
+    			}
+    		}
+		} catch(Exception $e) {
+		    throw new Exception($e->getMessage() . " [SQL] " . $sql, 0, $e);
 		}
 		return $result;
 	}

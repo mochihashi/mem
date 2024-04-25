@@ -65,7 +65,7 @@ export default class {
 				} else {
 					obj.addClass('is-invalid');
 					obj.parent().append(`<div class="invalid-feedback">${prefix}${text}${suffix}</div>`);
-					if(index == 0) form.find('[name="' + field + '"]').focus();
+					if(index == 0) this.form.find('[name="' + field + '"]').focus();
 				}
 				return;
 			}
