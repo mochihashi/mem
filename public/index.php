@@ -37,14 +37,12 @@ function getCardListHtml($list, $userId = 0, $isCategory = false) {
     $html = '';
     foreach($list as $row) {
         $body = '';
-        if(@$row['description']) $body .= '<div class="text-muted">' . $row['description'] . '</div>';
+        if(@$row['description']) $body .= '<div class="text-muted pb-2">' . $row['description'] . '</div>';
+        if(@$row['category_url']) {
+            $body .= '<div><a href="' . $row['category_url'] . '">' . $row['category_name'] . '</a></div>';
+        }
         if(!$userId && @$row['user_url']) {
-            $body .= 
-'<div class="d-flex align-items-center' . (@$row['description'] ? ' pt-5' : '') . '">
-	<div>
-		<a href="' . $row['user_url'] . '" class="text-muted">@' . $row['user_name'] . '</a>
-	</div>
-</div>';
+            $body .= '<div><a href="' . $row['user_url'] . '" class="text-muted">@' . $row['user_name'] . '</a></div>';
         }
         if($body) $body = '<div class="card-body d-flex flex-column">' . $body . '</div>';
         $image = '';

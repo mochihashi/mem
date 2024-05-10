@@ -42,5 +42,14 @@ $(document).ready(function(){
 	if(location.hostname != '127.0.0.1' && location.hostname != 'mem.local') {
 		window.app.includeScript('https://mochihashi.github.io/static/pixel/tracking.js');
 	}
-	setTimeout(function(){ feather.replace();}, 100);
+	let featherWait = 0;
+	let featherReplace = function() {
+		if(window.feather) {
+			feather.replace();
+		} else if(featherWait++ < 10) {
+			console.log('feather is not loaded yet: ' + featherWait);
+			setTimeout(featherReplace, 100);
+		}
+	};
+	featherReplace();
 });

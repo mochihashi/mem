@@ -74,6 +74,9 @@ class DataFile {
 		foreach($list as $i => $row) {
 			$u = ($userId ? $userId : $row['user_id']);
 			$list[$i]['url'] = $this->getWebPath($this->getTableDir($u, $row['id']));
+			if(@$row['category_id']) {
+			    $list[$i]['category_url'] = $this->getWebPath($this->getCategoryDir($u, $row['category_id']));
+			}
 		}
 	}
 	
