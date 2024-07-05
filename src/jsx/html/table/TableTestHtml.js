@@ -19,6 +19,8 @@ export default function({title, list}) {
 			<div class="card-header">
 				<h3 class="card-title">${title}</h3>
 				<div class="card-actions">
+					<a href="javascript:void(0)" class="card-options-maximize"><i data-feather="maximize" class="icon"></i></a>
+					<a href="javascript:void(0)" class="card-options-minimize" style="display:none;"><i data-feather="minimize" class="icon"></i></a>
 					<a href="javascript:void(0)" class="card-options-remove" data-toggle="card-remove"><i data-feather="x" class="icon"></i></a>
 				</div>
 			</div>
@@ -79,14 +81,6 @@ export default function({title, list}) {
 </div>
 <div class="row test-row-options">
 </div>
-<div class="row test-row-yesno">
-	<div class="col-6 mt-2">
-		<button class="btn btn-outline-primary w-100 btn-lg btn-block test-yes"><span class="lang-know"></span><i data-feather="chevron-down" class="icon"></i></button>
-	</div>
-	<div class="col-6 mt-2">
-		<button class="btn btn-outline-danger w-100 btn-lg btn-block test-no"><span class="lang-not-know"></span><i data-feather="chevron-right" class="icon"></i></button>
-	</div>
-</div>
 <div class="row test-row-answer mt-5">
 	<span class="test-answer">
 		<table class="table table-borderless">
@@ -95,6 +89,15 @@ export default function({title, list}) {
 			<button name="test-next" class="btn btn-outline-primary btn-lg btn-block"><i data-feather="chevron-right" class="icon"></i> <span class="lang-next"></span></button>
 		</div>
 	</span>
+</div>
+<div class="row test-row-yesno">
+	<div class="col-6 mt-2">
+		<button class="btn btn-outline-primary w-100 btn-lg btn-block test-yes"><span class="lang-know"></span><i data-feather="chevron-down" class="icon"></i></button>
+	</div>
+	<div class="col-6 mt-2">
+		<button class="btn btn-outline-danger w-100 btn-lg btn-block test-check"><span class="lang-check"></span><i data-feather="chevron-right" class="icon"></i></button>
+		<button class="btn btn-outline-danger w-100 btn-lg btn-block test-no"><span class="lang-not-know"></span><i data-feather="chevron-right" class="icon"></i></button>
+	</div>
 </div>
 <div class="row test-row-end mt-5">
 	<span class="test-answer text-center">
@@ -130,7 +133,18 @@ export default function({title, list}) {
 	});
 	div.find('[name="test-search"]').change(()=>{ test.searchText = $('[name="test-search"]').val(); start(); });
 	div.find('.test-row-yesno button.test-yes').click(clickDown);
+	div.find('.test-row-yesno button.test-check').click(clickNext);
 	div.find('.test-row-yesno button.test-no').click(clickNext);
+	div.find('.card-options-maximize').click(()=>{
+		div.find('.card').addClass('fullscreen');
+		div.find('.card-options-maximize').hide();
+		div.find('.card-options-minimize').show();
+	});
+	div.find('.card-options-minimize').click(()=>{
+		div.find('.card').removeClass('fullscreen');
+		div.find('.card-options-maximize').show();
+		div.find('.card-options-minimize').hide();
+	});
 	
 	if(isFirst) {
 		document.addEventListener('keydown', function(e){
@@ -233,6 +247,7 @@ function showQuestion(add, push) {
 		if(test.isYesNo) {
 			// no answer option
 			$('.test-row-yesno').show(); $('.test-row-options').hide();
+			$('.test-row-yesno .test-check').show(); $('.test-row-yesno .test-no').hide();
 		} else {
 			// show answer options
 			$('.test-row-yesno').hide(); $('.test-row-options').show();
@@ -247,7 +262,7 @@ function showQuestion(add, push) {
 			$('.test-row-options button.test-yes').click(clickDown);
 			$('.test-row-options button.test-no').click(clickNext);
 		}
-		$('.test-row-question').show();
+		$('.test-row-question').hide().fadeIn(1500);
 		if(test.pos > 0) { $('[name="test-before"]').show(); } else { $('[name="test-before"]').hide(); }
 		$('.test-row-end').hide();
 	}
@@ -303,7 +318,14 @@ function showAnswer() {
 	}
 	$('.test-row-answer table').html(html);
 	$('.test-row-answer').show(); $('[name="test-before"]').show();
-	$('.test-row-question').hide(); $('.test-row-options').hide(); $('.test-row-yesno').hide();
+	$('.test-row-question').hide(); $('.test-row-options').hide();
+	if(test.isYesNo) {
+		$('.test-row-yesno .test-check').hide(); $('.test-row-yesno .test-no').show();
+		$('.test-row-answer .btn-list').hide();
+	} else {
+		$('.test-row-yesno').hide();
+		$('.test-row-answer .btn-list').show();
+	}
 }
 
 function showBefore() {
@@ -323,12 +345,12 @@ function showNext(isClick) {
 function clickDown() { showDown(true); }
 function showDown(isClick) {
 	if(!test.isYesNo && !isClick) return;
-	if(test.isAnswer || test.isEnd) return;
+	if(test.isEnd) return;
 	if(!test.isMute) { playAudio('audio/coin.mp3'); }
 	if(test.isYesNo) {
 		showQuestion(1);
 	} else {
-		$('.test-question').html('<span class="test-ok"><i data-feather="check-circle" class="icon"></i></span>');
+		$('.test-question').html('<span class="test-ok"><i data-feather="check-circle" style="width:48px;height:48px;"></i></span>'); feather.replace();
 		setTimeout(function(){ showQuestion(1); }, 1000);
 	}
 }

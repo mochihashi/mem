@@ -40,6 +40,9 @@
 .test-ok {
 	color: #467fcf;
 }
+.fullscreen {
+	position: absolute; top: 0; left: 0; width: 100%;
+}
 
 @media (max-width: 768px) {
 	.test-question {
