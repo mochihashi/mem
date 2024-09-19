@@ -262,7 +262,7 @@ function showQuestion(add, push) {
 			$('.test-row-options button.test-yes').click(clickDown);
 			$('.test-row-options button.test-no').click(clickNext);
 		}
-		$('.test-row-question').hide().fadeIn(1500);
+		$('.test-row-question').hide().fadeIn(1000);
 		if(test.pos > 0) { $('[name="test-before"]').show(); } else { $('[name="test-before"]').hide(); }
 		$('.test-row-end').hide();
 	}
